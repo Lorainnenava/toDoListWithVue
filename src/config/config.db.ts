@@ -12,7 +12,7 @@ const connection = new Sequelize({
   password: process.env.DBPASS,
   database: process.env.DBASE,
   storage: "database.mysql",
-  models: ModelsDependencies,
+  models: [...ModelsDependencies],
 });
 
 // Función para autenticar
