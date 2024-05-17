@@ -5,7 +5,8 @@
   "main": "app.js",
   "scripts": {
     "start": "nodemon dist/app.js",
-    "build": "npx tsc --watch"
+    "dev": "npx tsc && nodemon dist/app.js",
+    "build": "npx tsc"
   },
   "author": "Lorainne",
   "license": "ISC",

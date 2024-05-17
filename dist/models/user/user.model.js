@@ -12,7 +12,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.User = void 0;
 const sequelize_1 = require("sequelize");
 const sequelize_typescript_1 = require("sequelize-typescript");
-// Definición de la clase User como un modelo Sequelize
+/**
+ * Definición de la clase User como un modelo Sequelize
+ */
 let User = class User extends sequelize_typescript_1.Model {
 };
 exports.User = User;

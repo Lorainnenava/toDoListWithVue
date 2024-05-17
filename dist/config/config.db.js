@@ -25,13 +25,13 @@ const connection = new sequelize_typescript_1.Sequelize({
     password: process.env.DBPASS,
     database: process.env.DBASE,
     storage: "database.mysql",
-    models: models_dependencies_1.ModelsDependencies,
+    models: [...models_dependencies_1.ModelsDependencies],
 });
 // Función para autenticar
 const authenticateDB = () => __awaiter(void 0, void 0, void 0, function* () {
     try {
         yield connection.authenticate();
-        connection.sync();
+        // connection.sync();
         console.log("La conexión ha sido establecida exitosamente. 🐵");
     }
     catch (error) {

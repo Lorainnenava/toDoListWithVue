@@ -1,8 +1,8 @@
 import { FindOptions, UpdateOptions } from "sequelize";
+import { UserRepositoryInterface } from "../../models/interface/repositories/user/userRepository.interface";
 import { UserRequestDto } from "../../models/user/dto/request/user.request.dto";
 import { UserResponseDto } from "../../models/user/dto/response/user.response.dto";
 import { Context } from "../context";
-import { UserRepositoryInterface } from "../../models/interface/repositories/user/userRepository.interface";
 
 export class UserRepository implements UserRepositoryInterface {
   constructor(private _context: Context) {}
