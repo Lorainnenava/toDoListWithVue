@@ -1,7 +1,15 @@
-import { UserCreateServiceInterface } from "../../models/interface/services/user/userCreate";
+import { Router } from "express";
+import { UserCreateService } from "../../services/user/userCreate";
 
-export class UserController {
-  constructor(
-    private _userCreateServiceInterface: UserCreateServiceInterface
-  ) {}
-}
+export const userRoute = Router();
+
+// Define el controlador
+const controller = {
+  userCreateService: new UserCreateService(),
+};
+
+// Crear usuario
+userRoute.post("/create", async (req) => {
+  const body = req?.body;
+  await controller.userCreateService.handle(body);
+});

@@ -2,6 +2,7 @@ import express from "express";
 import dotenv from "dotenv";
 import cors from "cors";
 import authenticateDB from "./config/config.db";
+import controllerDependencies from "./controllers/controllerDependencies";
 
 // configures dotenv to work in your application
 const app = express();
@@ -15,7 +16,10 @@ app.use(
     credentials: true,
   })
 );
+
 app.use(express.json());
+// Monta todas las rutas definidas en controllers
+app.use("/api", controllerDependencies);
 
 // Autenticar la base de datos antes de iniciar el servidor
 authenticateDB().then(() => {

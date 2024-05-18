@@ -1,7 +1,7 @@
 import "reflect-metadata";
 import dotenv from "dotenv";
 import { Sequelize } from "sequelize-typescript";
-import { ModelsDependencies } from "../models/models.dependencies";
+import { ModelsDependencies } from "../models/modelsDependencies";
 
 dotenv.config();
 

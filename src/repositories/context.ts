@@ -1,7 +1,9 @@
 import { ModelCtor } from "sequelize-typescript";
 import { User } from "../models/user/user.model";
 
-export abstract class Context {
+export class Context {
   // Model User
-  abstract user: ModelCtor<User>;
+  public user: ModelCtor<User> = User;
 }
+
+export const context = new Context();

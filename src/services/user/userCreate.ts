@@ -1,21 +1,20 @@
 import { UserCreateServiceInterface } from "../../models/interface/services/user/userCreate";
 import { UserRequestDto } from "../../models/user/dto/request/user.request.dto";
 import { UserResponseDto } from "../../models/user/dto/response/user.response.dto";
-import { UserRepository } from "../../repositories/user/user.repository";
+import { RepositoryDependencies } from "../../repositories/repositorioDependencies";
 
 /**
  * Class UserCreate
  * @implements {UserCreateServiceInterface}
  */
-export class UserCreate implements UserCreateServiceInterface {
+export class UserCreateService implements UserCreateServiceInterface {
   /**
-   * Constructor
-   * @param _userRepository - Instancia de UserRepository
+   * Instancia del repositorio
    */
-  constructor(public _userRepository: UserRepository) {}
+  private _repository = RepositoryDependencies;
 
   async handle(request: UserRequestDto): Promise<UserResponseDto> {
-    const createUser = await this._userRepository.create(request);
+    const createUser = await this._repository.userRepository.create(request);
 
     return createUser;
   }
