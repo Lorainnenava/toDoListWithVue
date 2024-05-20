@@ -16,7 +16,7 @@ exports.authenticateDB = void 0;
 require("reflect-metadata");
 const dotenv_1 = __importDefault(require("dotenv"));
 const sequelize_typescript_1 = require("sequelize-typescript");
-const models_dependencies_1 = require("../models/models.dependencies");
+const modelsDependencies_1 = require("../models/modelsDependencies");
 dotenv_1.default.config();
 const connection = new sequelize_typescript_1.Sequelize({
     host: process.env.DBHOST,
@@ -25,7 +25,7 @@ const connection = new sequelize_typescript_1.Sequelize({
     password: process.env.DBPASS,
     database: process.env.DBASE,
     storage: "database.mysql",
-    models: [...models_dependencies_1.ModelsDependencies],
+    models: [...modelsDependencies_1.ModelsDependencies],
 });
 // Función para autenticar
 const authenticateDB = () => __awaiter(void 0, void 0, void 0, function* () {

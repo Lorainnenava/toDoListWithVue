@@ -1,9 +1,8 @@
-import express from "express";
-import { userRoute } from "./user/user.controller";
+import { RoutingControllersOptions } from "routing-controllers";
+import { UserController } from "./user/user.controller";
 
-const controllerDependencies = express.Router();
-
-// Configura las rutas para cada controlador
-controllerDependencies.use("/users", userRoute);
-
-export default controllerDependencies;
+export const ControllerDependencies: RoutingControllersOptions = {
+  controllers: [UserController],
+  routePrefix: "/api",
+  cors: true,
+};
