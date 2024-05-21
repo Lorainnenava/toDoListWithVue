@@ -5,8 +5,10 @@
         "DBPASS",
         "DBUSER",
         "Lorainne",
+        "Metadatas",
         "openapi",
         "plantilla",
-        "plantillaexpress"
+        "plantillaexpress",
+        "typedi"
     ]
 }

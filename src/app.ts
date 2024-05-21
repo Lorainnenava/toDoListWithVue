@@ -1,22 +1,20 @@
+import { validationMetadatasToSchemas } from "class-validator-jsonschema";
 import cors from "cors";
 import dotenv from "dotenv";
-import express, { Request, Response } from "express";
+import express, { Express, Request, Response } from "express";
 import "reflect-metadata";
 import {
   createExpressServer,
   getMetadataArgsStorage,
-  useContainer,
 } from "routing-controllers";
 import { routingControllersToSpec } from "routing-controllers-openapi";
 import swaggerUi from "swagger-ui-express";
-import { Container } from "typedi";
-import authenticateDB from "./config/config.db";
+import authenticateDB from "./config/configDb";
 import { ControllerDependencies } from "./controllers/controllerDependencies";
-import { validationMetadatasToSchemas } from "class-validator-jsonschema";
 const { defaultMetadataStorage } = require("class-transformer/cjs/storage");
 
 // configures dotenv to work in your application
-const app = createExpressServer(ControllerDependencies);
+const app: Express = createExpressServer(ControllerDependencies);
 const port = 5000;
 dotenv.config();
 
@@ -27,16 +25,14 @@ app.use(
     credentials: true,
   })
 );
-// Configura el contenedor de DI para routing-controllers
-useContainer(Container);
-
-const storage = getMetadataArgsStorage();
 
 // Parse class-validator classes into JSON Schema:
 const schemas = validationMetadatasToSchemas({
   classTransformerMetadataStorage: defaultMetadataStorage,
-  refPointerPrefix: "#/components/schemas/",
+  refPointerPrefix: "../models/user/request/userRequestDto.ts",
 });
+
+const storage = getMetadataArgsStorage();
 
 // Configuración de Swagger
 const options = routingControllersToSpec(storage, ControllerDependencies, {

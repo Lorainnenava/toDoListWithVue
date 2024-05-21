@@ -1,6 +1,6 @@
 import { UserCreateServiceInterface } from "../../models/interface/services/user/userCreate";
-import { UserRequestDto } from "../../models/user/dto/request/user.request.dto";
-import { UserResponseDto } from "../../models/user/dto/response/user.response.dto";
+import { UserRequestDto } from "../../models/user/dto/request/userRequestDto";
+import { UserResponseDto } from "../../models/user/dto/response/userResponseDto";
 import { RepositoryDependencies } from "../../repositories/repositorioDependencies";
 
 /**

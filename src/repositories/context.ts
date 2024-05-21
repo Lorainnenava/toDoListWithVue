@@ -1,5 +1,5 @@
 import { ModelCtor } from "sequelize-typescript";
-import { User } from "../models/user/user.model";
+import { User } from "../models/user/userModel";
 
 export class Context {
   // Model User
