@@ -1,8 +1,8 @@
+import "reflect-metadata";
 import { validationMetadatasToSchemas } from "class-validator-jsonschema";
 import cors from "cors";
 import dotenv from "dotenv";
 import express, { Express, Request, Response } from "express";
-import "reflect-metadata";
 import {
   createExpressServer,
   getMetadataArgsStorage,
@@ -26,17 +26,28 @@ app.use(
   })
 );
 
-// Parse class-validator classes into JSON Schema:
-const schemas = validationMetadatasToSchemas({
+// Genera los esquemas JSON a partir de las clases TypeScript
+const xd = validationMetadatasToSchemas({
   classTransformerMetadataStorage: defaultMetadataStorage,
-  refPointerPrefix: "../models/user/request/userRequestDto.ts",
 });
 
 const storage = getMetadataArgsStorage();
 
 // Configuración de Swagger
 const options = routingControllersToSpec(storage, ControllerDependencies, {
-  components: schemas,
+  components: {
+    schemas: {
+      UserRequestDto: {
+        type: "object",
+        properties: {
+          id: { type: "number" },
+          email: { type: "string" },
+          password: { type: "string" },
+        },
+        required: ["id", "email", "password"],
+      },
+    },
+  },
   info: {
     title: "LogRocket Express API with Swagger",
     version: "0.1.0",
@@ -45,7 +56,7 @@ const options = routingControllersToSpec(storage, ControllerDependencies, {
   },
 });
 
-app.use("/api", swaggerUi.serve, swaggerUi.setup(options));
+app.use("/docs", swaggerUi.serve, swaggerUi.setup(options));
 
 app.use(express.json());
 
@@ -53,7 +64,7 @@ app.use(express.json());
 authenticateDB().then(() => {
   app.listen(port, () => {
     console.log(`Escuchando en el puerto http://localhost:${port}`);
-    console.log(`Open API swagger on http://localhost:${port}/api`);
+    console.log(`Open API swagger on http://localhost:${port}/docs`);
   });
 });
 

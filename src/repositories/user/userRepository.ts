@@ -1,5 +1,5 @@
 import { FindOptions, UpdateOptions } from "sequelize";
-import { UserRepositoryInterface } from "../../models/interface/repositories/user/userRepository.interface";
+import { UserRepositoryInterface } from "../../models/interface/repositories/user/userRepositoryInterface";
 import { UserRequestDto } from "../../models/user/dto/request/userRequestDto";
 import { UserResponseDto } from "../../models/user/dto/response/userResponseDto";
 import { context } from "../context";
