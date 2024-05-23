@@ -1,38 +1,37 @@
+import { AutoMap } from "@automapper/classes";
 import { DataTypes } from "sequelize";
 import { Column, Model, Table } from "sequelize-typescript";
 
+@Table({ tableName: "Users", timestamps: true })
 /**
  * Definición de la clase User como un modelo Sequelize
  */
-@Table({ tableName: "Users", timestamps: true, paranoid: true })
 export class User extends Model {
-  // Definición de la columna id
+  /**
+   * Definición de la columna id
+   */
+  @AutoMap()
   @Column({ type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true })
   declare id?: number;
 
-  // Definición de la columna email
+  /**
+   * Definición de la columna email
+   */
+  @AutoMap()
   @Column({ type: DataTypes.STRING })
   declare email?: string;
 
-  // Definición de la columna password
+  /**
+   * Definición de la columna password
+   */
+  @AutoMap()
   @Column({ type: DataTypes.STRING })
   declare password?: string;
 
-  // Definición de la columna createdAt
-  @Column({
-    type: DataTypes.DATE,
-    defaultValue: DataTypes.NOW,
-  })
-  declare createdAt?: Date;
-
-  // Definición de la columna updatedAt
-  @Column({
-    type: DataTypes.DATE,
-    defaultValue: DataTypes.NOW,
-  })
-  declare updatedAt?: Date;
-
-  // Definición de la columna deletedAt para manejar eliminación lógica
-  @Column({ type: DataTypes.DATE, allowNull: true })
-  declare deletedAt?: Date | null;
+  /**
+   * Definición de la columna token
+   */
+  @AutoMap()
+  @Column({ type: DataTypes.STRING, allowNull: true })
+  declare token?: string;
 }

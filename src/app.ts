@@ -1,24 +1,27 @@
 import "reflect-metadata";
-import { validationMetadatasToSchemas } from "class-validator-jsonschema";
+import bodyParser from "body-parser";
 import cors from "cors";
 import dotenv from "dotenv";
-import express, { Express, Request, Response } from "express";
-import {
-  createExpressServer,
-  getMetadataArgsStorage,
-} from "routing-controllers";
-import { routingControllersToSpec } from "routing-controllers-openapi";
+import express, { Express } from "express";
+import { createExpressServer, useContainer } from "routing-controllers";
 import swaggerUi from "swagger-ui-express";
+import Container from "typedi";
 import authenticateDB from "./config/configDb";
+import { ConfigSwagger } from "./config/swagger";
 import { ControllerDependencies } from "./controllers/controllerDependencies";
-const { defaultMetadataStorage } = require("class-transformer/cjs/storage");
 
 // configures dotenv to work in your application
 const app: Express = createExpressServer(ControllerDependencies);
+
+// Configurar el container
+useContainer(Container);
+
 const port = 5000;
 dotenv.config();
 
 // MIDDLEWARE
+app.use(express.json());
+
 app.use(
   cors({
     origin: "*",
@@ -26,39 +29,16 @@ app.use(
   })
 );
 
-// Genera los esquemas JSON a partir de las clases TypeScript
-const xd = validationMetadatasToSchemas({
-  classTransformerMetadataStorage: defaultMetadataStorage,
+app.use(bodyParser.json());
+
+const swagger = ConfigSwagger(ControllerDependencies);
+
+app.use("/docs", swaggerUi.serve, swaggerUi.setup(swagger));
+
+app.get("/", function (req, res) {
+  const response = { message: "Hola mundo", swagger: swagger };
+  res.json(response);
 });
-
-const storage = getMetadataArgsStorage();
-
-// Configuración de Swagger
-const options = routingControllersToSpec(storage, ControllerDependencies, {
-  components: {
-    schemas: {
-      UserRequestDto: {
-        type: "object",
-        properties: {
-          id: { type: "number" },
-          email: { type: "string" },
-          password: { type: "string" },
-        },
-        required: ["id", "email", "password"],
-      },
-    },
-  },
-  info: {
-    title: "LogRocket Express API with Swagger",
-    version: "0.1.0",
-    description:
-      "This is a simple CRUD API application made with Express and documented with Swagger",
-  },
-});
-
-app.use("/docs", swaggerUi.serve, swaggerUi.setup(options));
-
-app.use(express.json());
 
 // Autenticar la base de datos antes de iniciar el servidor
 authenticateDB().then(() => {
@@ -66,8 +46,4 @@ authenticateDB().then(() => {
     console.log(`Escuchando en el puerto http://localhost:${port}`);
     console.log(`Open API swagger on http://localhost:${port}/docs`);
   });
-});
-
-app.get("/", function (req: Request, res: Response) {
-  res.send("Hola mundo");
 });

@@ -1,44 +1,41 @@
 import { FindOptions, UpdateOptions } from "sequelize";
 import { UserRequestDto } from "../../../user/dto/request/userRequestDto";
-import { UserResponseDto } from "../../../user/dto/response/userResponseDto";
+import { User } from "../../../user/userModel";
 
 export interface UserRepositoryInterface {
   /**
    * Crear un nuevo elemento.
    * @param request - Datos a crear.
-   * @returns {Promise<UserResponseDto>}
+   * @returns {Promise<User>}
    */
-  create(request: UserRequestDto): Promise<UserResponseDto>;
+  create(request: UserRequestDto): Promise<User>;
 
   /**
    * Obtener todos los elementos.
    * @param options - Parámetros de búsqueda.
-   * @returns {Promise<UserResponseDto[]>}
+   * @returns {Promise<User[]>}
    */
-  getAll(options?: FindOptions<UserRequestDto>): Promise<UserResponseDto[]>;
+  getAll(options?: FindOptions<User>): Promise<User[]>;
 
   /**
    * Obtener un elemento.
    * @param options - Parámetros de búsqueda.
-   * @returns {Promise<UserResponseDto>}
+   * @returns {Promise<User>}
    */
-  getOne(options: FindOptions<UserRequestDto>): Promise<UserResponseDto>;
+  getOne(options: FindOptions<User>): Promise<User>;
 
   /**
    * Actualizar un elemento.
    * @param options - Parámetros de búsqueda.
    * @param request - Datos para actualizar.
-   * @returns {Promise<UserResponseDto>}
+   * @returns {Promise<User>}
    */
-  update(
-    options: UpdateOptions<UserRequestDto>,
-    request: UserRequestDto
-  ): Promise<UserResponseDto>;
+  update(options: UpdateOptions<User>, request: User): Promise<User>;
 
   /**
    * Eliminar un elemento.
    * @param options - Parámetros de búsqueda.
-   * @returns {Promise<UserResponseDto>}
+   * @returns {Promise<User>}
    */
-  delete(options: FindOptions<UserRequestDto>): Promise<UserResponseDto>;
+  delete(options: FindOptions<User>): Promise<User>;
 }

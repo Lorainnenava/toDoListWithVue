@@ -1,23 +1,20 @@
 import { FindOptions, UpdateOptions } from "sequelize";
 import { UserRepositoryInterface } from "../../models/interface/repositories/user/userRepositoryInterface";
 import { UserRequestDto } from "../../models/user/dto/request/userRequestDto";
-import { UserResponseDto } from "../../models/user/dto/response/userResponseDto";
-import { context } from "../context";
+import { User } from "../../models/user/userModel";
+import { Context } from "../context";
 
 export class UserRepository implements UserRepositoryInterface {
-  /**
-   * Instancia del Contexto
-   */
-  private _context = context;
+  private readonly _context: Context = new Context();
 
   /**
    * Crear un elemento.
    * @param request - datos a crear.
-   * @returns {Promise<UserResponseDto>}
+   * @returns {Promise<User>}
    */
-  async create(request: UserRequestDto): Promise<UserResponseDto> {
+  async create(request: User): Promise<User> {
     try {
-      const response = await this._context.user.create({ request });
+      const response = await this._context.user.create({ ...request });
 
       return response;
     } catch (error) {
@@ -28,9 +25,9 @@ export class UserRepository implements UserRepositoryInterface {
   /**
    * Obtener todos los elementos.
    * @param options - parámetro de búsqueda.
-   * @returns {Promise<UserResponseDto[]>}
+   * @returns {Promise<User[]>}
    */
-  async getAll(options?: FindOptions): Promise<UserResponseDto[]> {
+  async getAll(options?: FindOptions<User>): Promise<User[]> {
     try {
       const response = await this._context.user.findAll(options);
 
@@ -43,9 +40,9 @@ export class UserRepository implements UserRepositoryInterface {
   /**
    * Obtener un elemento.
    * @param options - parámetro de búsqueda.
-   * @returns {Promise<UserResponseDto>}
+   * @returns {Promise<User>}
    */
-  async getOne(options: FindOptions): Promise<UserResponseDto> {
+  async getOne(options: FindOptions<User>): Promise<User> {
     try {
       const response = await this._context.user.findOne(options);
 
@@ -63,12 +60,12 @@ export class UserRepository implements UserRepositoryInterface {
    * Actualizar un elemento.
    * @param options - parámetro de búsqueda.
    * @param request - datos actualizar.
-   * @returns {Promise<UserResponseDto>}
+   * @returns {Promise<User>}
    */
   async update(
-    options: UpdateOptions,
+    options: UpdateOptions<User>,
     request: UserRequestDto
-  ): Promise<UserResponseDto> {
+  ): Promise<User> {
     try {
       await this._context.user.update(request, options);
 
@@ -87,9 +84,9 @@ export class UserRepository implements UserRepositoryInterface {
   /**
    * Eliminar un elemento.
    * @param options - parámetro de búsqueda.
-   * @returns {Promise<UserResponseDto>}
+   * @returns {Promise<User>}
    */
-  async delete(options: UpdateOptions): Promise<UserResponseDto> {
+  async delete(options: UpdateOptions<User>): Promise<User> {
     try {
       await this._context.user.destroy(options);
 

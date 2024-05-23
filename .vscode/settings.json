@@ -1,5 +1,6 @@
 {
     "cSpell.words": [
+        "automapper",
         "DBASE",
         "DBHOST",
         "DBPASS",
@@ -9,6 +10,7 @@
         "openapi",
         "plantilla",
         "plantillaexpress",
+        "Sesion",
         "typedi"
     ]
 }

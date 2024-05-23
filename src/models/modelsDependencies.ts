@@ -1,4 +1,5 @@
+import { Session } from "./session/sessionModel";
 import { User } from "./user/userModel";
 
-// Inject all models
-export const ModelsDependencies = [User];
+// Inyectar todos los modelos.
+export const ModelsDependencies = [User, Session];
