@@ -1,5 +1,4 @@
 import { FindOptions, UpdateOptions } from "sequelize";
-import { UserRequestDto } from "../../../user/dto/request/userRequestDto";
 import { User } from "../../../user/userModel";
 
 export interface UserRepositoryInterface {
@@ -8,7 +7,7 @@ export interface UserRepositoryInterface {
    * @param request - Datos a crear.
    * @returns {Promise<User>}
    */
-  create(request: UserRequestDto): Promise<User>;
+  create(request: User): Promise<User>;
 
   /**
    * Obtener todos los elementos.
@@ -22,7 +21,7 @@ export interface UserRepositoryInterface {
    * @param options - Parámetros de búsqueda.
    * @returns {Promise<User>}
    */
-  getOne(options: FindOptions<User>): Promise<User>;
+  getOne(options: FindOptions<User>): Promise<User | null>;
 
   /**
    * Actualizar un elemento.

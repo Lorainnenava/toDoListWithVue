@@ -2,6 +2,7 @@ import { FindOptions, UpdateOptions } from "sequelize";
 import { UserRepositoryInterface } from "../../models/interface/repositories/user/userRepositoryInterface";
 import { UserRequestDto } from "../../models/user/dto/request/userRequestDto";
 import { User } from "../../models/user/userModel";
+import { PlainWithoutId } from "../../utils";
 import { Context } from "../context";
 
 export class UserRepository implements UserRepositoryInterface {
@@ -14,7 +15,9 @@ export class UserRepository implements UserRepositoryInterface {
    */
   async create(request: User): Promise<User> {
     try {
-      const response = await this._context.user.create({ ...request });
+      const data = PlainWithoutId(request);
+
+      const response = await this._context.user.create(data);
 
       return response;
     } catch (error) {
@@ -42,17 +45,17 @@ export class UserRepository implements UserRepositoryInterface {
    * @param options - parámetro de búsqueda.
    * @returns {Promise<User>}
    */
-  async getOne(options: FindOptions<User>): Promise<User> {
+  async getOne(options: FindOptions<User>): Promise<User | null> {
     try {
       const response = await this._context.user.findOne(options);
 
       if (!response) {
-        throw new Error("Elemento no encontrado");
+        return null;
       }
 
       return response;
     } catch (error) {
-      throw new Error("Error obteniendo un usuario");
+      return null;
     }
   }
 

@@ -2,11 +2,11 @@ import { AutoMap } from "@automapper/classes";
 import { DataTypes } from "sequelize";
 import { Column, Model, Table } from "sequelize-typescript";
 
-@Table({ tableName: "Users", timestamps: true })
+@Table({ tableName: "taks", timestamps: true })
 /**
- * Definición de la clase User como un modelo Sequelize
+ * Definición de la clase Task como un modelo Sequelize
  */
-export class User extends Model {
+export class Task extends Model {
   /**
    * Definición de la columna id
    */
@@ -19,19 +19,12 @@ export class User extends Model {
    */
   @AutoMap()
   @Column({ type: DataTypes.STRING })
-  declare email?: string;
+  declare nombre?: string;
 
   /**
    * Definición de la columna password
    */
   @AutoMap()
   @Column({ type: DataTypes.STRING })
-  declare password?: string;
-
-  /**
-   * Definición de la columna code
-   */
-  @AutoMap()
-  @Column({ type: DataTypes.STRING, allowNull: true })
-  declare code?: string;
+  declare idEtiqueta?: string;
 }

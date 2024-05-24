@@ -6,6 +6,8 @@ import { UserRequestDto } from "../../models/user/dto/request/userRequestDto";
 import { UserResponseDto } from "../../models/user/dto/response/userResponseDto";
 import { User } from "../../models/user/userModel";
 import { RepositoryDependencies } from "../../repositories/repositorioDependencies";
+import { CodeRandom, HandleEmail } from "../../utils";
+import { emailConfirmationTemplate } from "../../utils/template/emailConfirmationTemplate";
 import { UserMapper } from "../mapper/user/userMapper";
 
 /**
@@ -33,9 +35,39 @@ export class UserCreateService implements UserCreateServiceInterface {
       throw new Error("Enviar todos los datos.");
     }
 
-    const createUser = await this._repository.userRepository.create(
-      requestMapper
-    );
+    // Generar un código aleatorio único y verificar si ya existe en la base de datos
+    let codeGenerate: string;
+    let userWithCode: User | null;
+
+    do {
+      codeGenerate = CodeRandom();
+      userWithCode = await this._repository.userRepository.getOne({
+        where: { code: codeGenerate },
+      });
+    } while (userWithCode !== null);
+
+    const createUser = await this._repository.userRepository.create({
+      ...requestMapper?.dataValues,
+      code: codeGenerate,
+    });
+
+    // Enviar correo de confirmación de registro.
+    if (createUser?.id) {
+      const htmlContent = emailConfirmationTemplate(codeGenerate);
+
+      await HandleEmail({
+        to: request?.email,
+        subject: "Confirma tu registro en Task Tracker",
+        html: htmlContent,
+        attachments: [
+          {
+            filename: "logoToDoList.jpg",
+            path: "public/logoToDoList.jpg",
+            cid: "logo",
+          },
+        ],
+      });
+    }
 
     const response = mapper.map(createUser, User, UserResponseDto);
 

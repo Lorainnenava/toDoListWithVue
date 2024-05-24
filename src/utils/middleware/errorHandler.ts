@@ -1,8 +1,8 @@
 import { Request, Response } from "express";
 import {
-    ExpressErrorMiddlewareInterface,
-    HttpError,
-    Middleware,
+  ExpressErrorMiddlewareInterface,
+  HttpError,
+  Middleware,
 } from "routing-controllers";
 import { Service } from "typedi";
 
@@ -15,11 +15,11 @@ export class ErrorHandlerMiddleware implements ExpressErrorMiddlewareInterface {
     res: Response,
     next: (err: any) => any
   ): void {
-    const status = error.httpCode || 500;
-    const message = error.message || "Internal Server Error";
+    const status = error?.httpCode || 500;
+    const message = error?.message || "Internal Server Error";
 
     res.status(status).json({
-      name: error.name,
+      name: error?.name,
       message: message,
     });
   }

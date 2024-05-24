@@ -32,7 +32,7 @@ export class SessionCreateService implements SessionCreateServiceInterface {
         where: { email: request?.email },
       });
 
-      if (!searchUser) {
+      if (!searchUser || searchUser?.code) {
         throw new Error("Este usuario no existe.");
       }
 
