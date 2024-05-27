@@ -1,5 +1,6 @@
 import { AutoMap } from "@automapper/classes";
 import {
+  IsBoolean,
   IsEmail,
   IsNotEmpty,
   IsNumber,
@@ -14,6 +15,11 @@ export class UserRequestDto {
   public id?: number;
 
   @AutoMap()
+  @IsString()
+  @IsNotEmpty()
+  public userName?: string;
+
+  @AutoMap()
   @IsEmail()
   @IsNotEmpty()
   public email?: string;
@@ -22,4 +28,9 @@ export class UserRequestDto {
   @IsString()
   @IsNotEmpty()
   public password?: string;
+
+  @AutoMap()
+  @IsBoolean()
+  @IsOptional()
+  public state?: boolean;
 }

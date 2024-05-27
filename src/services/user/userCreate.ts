@@ -9,6 +9,7 @@ import { RepositoryDependencies } from "../../repositories/repositorioDependenci
 import { CodeRandom, HandleEmail } from "../../utils";
 import { emailConfirmationTemplate } from "../../utils/template/emailConfirmationTemplate";
 import { UserMapper } from "../mapper/user/userMapper";
+import { Op } from "sequelize";
 
 /**
  * Class UserCreate
@@ -33,6 +34,18 @@ export class UserCreateService implements UserCreateServiceInterface {
 
     if (errors?.length > 0) {
       throw new Error("Enviar todos los datos.");
+    }
+
+    const exist = await this._repository.userRepository.getOne({
+      where: {
+        [Op.or]: [{ email: request?.email }, { userName: request?.userName }],
+      },
+    });
+
+    if (exist) {
+      throw new Error(
+        "Ya existe un usuario con este email o nombre de usuario."
+      );
     }
 
     // Generar un código aleatorio único y verificar si ya existe en la base de datos

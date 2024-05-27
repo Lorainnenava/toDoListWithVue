@@ -15,6 +15,13 @@ export class User extends Model {
   declare id?: number;
 
   /**
+   * Definición de la columna userName
+   */
+  @AutoMap()
+  @Column({ type: DataTypes.STRING })
+  declare userName?: string;
+
+  /**
    * Definición de la columna email
    */
   @AutoMap()
@@ -34,4 +41,11 @@ export class User extends Model {
   @AutoMap()
   @Column({ type: DataTypes.STRING, allowNull: true })
   declare code?: string;
+
+  /**
+   * Definición de la columna state
+   */
+  @AutoMap()
+  @Column({ type: DataTypes.BOOLEAN })
+  declare state?: boolean;
 }
