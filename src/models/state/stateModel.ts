@@ -2,11 +2,11 @@ import { AutoMap } from "@automapper/classes";
 import { DataTypes } from "sequelize";
 import { Column, Model, Table } from "sequelize-typescript";
 
-@Table({ tableName: "Labels", timestamps: true })
+@Table({ tableName: "States", timestamps: true })
 /**
- * Definición de la clase Label como un modelo Sequelize
+ * Definición de la clase State como un modelo Sequelize
  */
-export class Label extends Model {
+export class State extends Model {
   /**
    * Definición de la columna id
    */
@@ -20,4 +20,11 @@ export class Label extends Model {
   @AutoMap()
   @Column({ type: DataTypes.STRING })
   declare name?: string;
+
+  /**
+   * Definición de la columna color
+   */
+  @AutoMap()
+  @Column({ type: DataTypes.STRING })
+  declare color?: string;
 }

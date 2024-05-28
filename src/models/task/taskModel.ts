@@ -2,13 +2,16 @@ import { AutoMap } from "@automapper/classes";
 import { DataTypes } from "sequelize";
 import {
   BelongsTo,
+  BelongsToMany,
   Column,
   ForeignKey,
   Model,
   Table,
 } from "sequelize-typescript";
+import { State } from "../state/stateModel";
+import { Tag } from "../tag/tagModel";
+import { TaskTag } from "../taskTag/taskTagModel";
 import { User } from "../user/userModel";
-import { Label } from "../label/labelModel";
 
 @Table({ tableName: "Taks", timestamps: true })
 /**
@@ -25,16 +28,18 @@ export class Task extends Model {
   /**
    * Definición del identificador con la tabla User
    */
+  @AutoMap()
   @ForeignKey(() => User)
   @Column({ type: DataTypes.INTEGER })
   declare idUser?: number;
 
   /**
-   * Definición del identificador con la tabla Label
+   * Definición del identificador con la tabla State
    */
-  @ForeignKey(() => Label)
+  @AutoMap()
+  @ForeignKey(() => State)
   @Column({ type: DataTypes.INTEGER })
-  declare idLabel?: number;
+  declare idState?: number;
 
   /**
    * Definición de la columna name
@@ -51,21 +56,21 @@ export class Task extends Model {
   declare description?: string;
 
   /**
-   * Definición de la columna status
-   */
-  @AutoMap()
-  @Column({ type: DataTypes.INTEGER })
-  declare status?: string;
-
-  /**
    * Relación con la tabla User
    */
   @BelongsTo(() => User, { foreignKey: "idUser" })
   declare user?: User;
 
   /**
-   * Relación con la tabla Label
+   * Relación con la tabla State
    */
-  @BelongsTo(() => Label)
-  declare label?: Label;
+  @BelongsTo(() => State)
+  declare state?: State;
+
+  /**
+   * Relación con la tabla TaskTag
+   */
+  @BelongsToMany(() => Tag, () => TaskTag)
+  @AutoMap(() => [Tag])
+  declare tags?: Tag[];
 }

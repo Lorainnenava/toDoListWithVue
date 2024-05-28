@@ -1,7 +1,7 @@
 import { AutoMap } from "@automapper/classes";
 import { IsNotEmpty, IsNumber, IsOptional, IsString } from "class-validator";
 
-export class LabelRequestDto {
+export class StateRequestDto {
   @AutoMap()
   @IsNumber()
   @IsOptional()
@@ -11,4 +11,9 @@ export class LabelRequestDto {
   @IsString()
   @IsNotEmpty()
   public name?: string;
+
+  @AutoMap()
+  @IsString()
+  @IsNotEmpty()
+  public color?: string;
 }

@@ -1,9 +1,12 @@
 import { AutoMap } from "@automapper/classes";
 
-export class LabelResponseDto {
+export class StateResponseDto {
   @AutoMap()
   public id?: number;
 
   @AutoMap()
   public name?: string;
+
+  @AutoMap()
+  public color?: string;
 }

@@ -1,5 +1,5 @@
 import { Service } from "typedi";
-import { UserValidateServiceInterface } from "../../models/interface/services/user/userValidate";
+import { UserValidateServiceInterface } from "../../models/interface/services/user/IUserValidate";
 import { RepositoryDependencies } from "../../repositories/repositorioDependencies";
 import { UserMapper } from "../mapper/user/userMapper";
 

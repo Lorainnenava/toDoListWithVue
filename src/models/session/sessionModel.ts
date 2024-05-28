@@ -1,10 +1,10 @@
+import { AutoMap } from "@automapper/classes";
 import { DataTypes } from "sequelize";
 import {
   BelongsTo,
   Column,
   ForeignKey,
   Model,
-  PrimaryKey,
   Table,
 } from "sequelize-typescript";
 import { User } from "../user/userModel";
@@ -17,13 +17,14 @@ export class Session extends Model {
   /**
    * Definición de la columna id
    */
-  @PrimaryKey
-  @Column({ type: DataTypes.INTEGER, autoIncrement: true })
+  @AutoMap()
+  @Column({ type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true })
   declare id?: number;
 
   /**
-   * Definición de la columna idUser
+   * Definición del identificador con la tabla User
    */
+  @AutoMap()
   @ForeignKey(() => User)
   @Column({ type: DataTypes.INTEGER })
   declare idUser?: number;
@@ -31,12 +32,13 @@ export class Session extends Model {
   /**
    * Definición de la columna email
    */
+  @AutoMap()
   @Column({ type: DataTypes.STRING })
   declare token?: string;
 
   /**
    * Relaciones
    */
-  @BelongsTo(() => User, {})
+  @BelongsTo(() => User)
   declare user?: User;
 }

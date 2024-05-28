@@ -1,5 +1,5 @@
 import { validate } from "class-validator";
-import { SessionCreateServiceInterface } from "../../models/interface/services/session/sessionCreateService";
+import { SessionCreateServiceInterface } from "../../models/interface/services/session/ISessionCreateService";
 import { SessionRequestDto } from "../../models/session/dto/request/sessionRequestDto";
 import { SessionResponseDto } from "../../models/session/dto/response/sessionResponseDto";
 import { RepositoryDependencies } from "../../repositories/repositorioDependencies";

@@ -1,7 +1,7 @@
 import { validate } from "class-validator";
 import { Service } from "typedi";
 import { mapper } from "../../config/mapper";
-import { UserCreateServiceInterface } from "../../models/interface/services/user/userCreateService";
+import { UserCreateServiceInterface } from "../../models/interface/services/user/IUserCreateService";
 import { UserRequestDto } from "../../models/user/dto/request/userRequestDto";
 import { UserResponseDto } from "../../models/user/dto/response/userResponseDto";
 import { User } from "../../models/user/userModel";

@@ -1,15 +1,16 @@
-import { IsNumber, IsString } from "class-validator";
-import { UserRequestDto } from "../../../user/dto/request/userRequestDto";
+import { AutoMap } from "@automapper/classes";
+import { UserResponseDto } from "../../../user/dto/response/userResponseDto";
 
 export class SessionResponseDto {
-  @IsNumber()
+  @AutoMap()
   public id?: number;
 
-  @IsNumber()
+  @AutoMap()
   public idUser?: number;
 
-  @IsString()
+  @AutoMap()
   public token?: string;
 
-  public user?: UserRequestDto;
+  @AutoMap(() => UserResponseDto)
+  public user?: UserResponseDto;
 }
