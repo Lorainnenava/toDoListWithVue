@@ -1,8 +1,7 @@
-import { FindOptions, UpdateOptions } from "sequelize";
+import { CreateOptions, FindOptions, UpdateOptions } from "sequelize";
 import { UserRepositoryInterface } from "../../models/interface/repositories/user/userRepositoryInterface";
 import { UserRequestDto } from "../../models/user/dto/request/userRequestDto";
 import { User } from "../../models/user/userModel";
-import { PlainWithoutId } from "../../utils";
 import { Context } from "../context";
 
 export class UserRepository implements UserRepositoryInterface {
@@ -13,11 +12,12 @@ export class UserRepository implements UserRepositoryInterface {
    * @param request - datos a crear.
    * @returns {Promise<User>}
    */
-  async create(request: User): Promise<User> {
+  async create(
+    request: UserRequestDto,
+    options?: CreateOptions
+  ): Promise<User> {
     try {
-      const data = PlainWithoutId(request);
-
-      const response = await this._context.user.create(data);
+      const response = await this._context.user.create({ ...request, options });
 
       return response;
     } catch (error) {
@@ -30,7 +30,7 @@ export class UserRepository implements UserRepositoryInterface {
    * @param options - parámetro de búsqueda.
    * @returns {Promise<User[]>}
    */
-  async getAll(options?: FindOptions<User>): Promise<User[]> {
+  async getAll(options?: FindOptions<UserRequestDto>): Promise<User[]> {
     try {
       const response = await this._context.user.findAll(options);
 
@@ -45,7 +45,7 @@ export class UserRepository implements UserRepositoryInterface {
    * @param options - parámetro de búsqueda.
    * @returns {Promise<User>}
    */
-  async getOne(options: FindOptions<User>): Promise<User | null> {
+  async getOne(options: FindOptions): Promise<User | null> {
     try {
       const response = await this._context.user.findOne(options);
 
@@ -65,10 +65,7 @@ export class UserRepository implements UserRepositoryInterface {
    * @param request - datos actualizar.
    * @returns {Promise<User>}
    */
-  async update(
-    options: UpdateOptions<User>,
-    request: UserRequestDto
-  ): Promise<User> {
+  async update(request: UserRequestDto, options: UpdateOptions): Promise<User> {
     try {
       await this._context.user.update(request, options);
 
@@ -89,7 +86,7 @@ export class UserRepository implements UserRepositoryInterface {
    * @param options - parámetro de búsqueda.
    * @returns {Promise<User>}
    */
-  async delete(options: UpdateOptions<User>): Promise<User> {
+  async delete(options: UpdateOptions<UserRequestDto>): Promise<User> {
     try {
       await this._context.user.destroy(options);
 

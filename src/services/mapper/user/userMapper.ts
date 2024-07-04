@@ -9,5 +9,6 @@ export class UserMapper {
     createMap(mapper, UserRequestDto, User);
     createMap(mapper, User, UserResponseDto);
     createMap(mapper, UserResponseDto, User);
+    createMap(mapper, User, UserRequestDto);
   }
 }

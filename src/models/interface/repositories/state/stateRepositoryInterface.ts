@@ -1,4 +1,5 @@
-import { FindOptions, UpdateOptions } from "sequelize";
+import { CreateOptions, FindOptions, UpdateOptions } from "sequelize";
+import { StateRequestDto } from "../../../state/dto/request/stateRequestDto";
 import { State } from "../../../state/stateModel";
 
 export interface StateRepositoryInterface {
@@ -7,21 +8,21 @@ export interface StateRepositoryInterface {
    * @param request - Datos a crear.
    * @returns {Promise<State>}
    */
-  create(request: State): Promise<State>;
+  create(request: StateRequestDto, options?: CreateOptions): Promise<State>;
 
   /**
    * Obtener todos los elementos.
    * @param options - Parámetros de búsqueda.
    * @returns {Promise<State[]>}
    */
-  getAll(options?: FindOptions<State>): Promise<State[]>;
+  getAll(options?: FindOptions<StateRequestDto>): Promise<State[]>;
 
   /**
    * Obtener un elemento.
    * @param options - Parámetros de búsqueda.
    * @returns {Promise<State>}
    */
-  getOne(options: FindOptions<State>): Promise<State | null>;
+  getOne(options: FindOptions<StateRequestDto>): Promise<State | null>;
 
   /**
    * Actualizar un elemento.
@@ -29,12 +30,12 @@ export interface StateRepositoryInterface {
    * @param request - Datos para actualizar.
    * @returns {Promise<State>}
    */
-  update(options: UpdateOptions<State>, request: State): Promise<State>;
+  update(request: StateRequestDto, options: UpdateOptions): Promise<State>;
 
   /**
    * Eliminar un elemento.
    * @param options - Parámetros de búsqueda.
    * @returns {Promise<State>}
    */
-  delete(options: FindOptions<State>): Promise<State>;
+  delete(options: FindOptions<StateRequestDto>): Promise<State>;
 }

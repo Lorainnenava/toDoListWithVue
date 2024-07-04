@@ -1,7 +1,7 @@
-import { FindOptions, UpdateOptions } from "sequelize";
+import { CreateOptions, FindOptions, UpdateOptions } from "sequelize";
 import { SessionRepositoryInterface } from "../../models/interface/repositories/session/sessionRepositoryInterface";
 import { SessionRequestDto } from "../../models/session/dto/request/sessionRequestDto";
-import { SessionResponseDto } from "../../models/session/dto/response/sessionResponseDto";
+import { Session } from "../../models/session/sessionModel";
 import { context } from "../context";
 
 export class SessionRepository implements SessionRepositoryInterface {
@@ -13,11 +13,17 @@ export class SessionRepository implements SessionRepositoryInterface {
   /**
    * Crear un elemento.
    * @param request - datos a crear.
-   * @returns {Promise<SessionResponseDto>}
+   * @returns {Promise<Session>}
    */
-  async create(request: SessionRequestDto): Promise<SessionResponseDto> {
+  async create(
+    request: SessionRequestDto,
+    options?: CreateOptions
+  ): Promise<Session> {
     try {
-      const response = await this._context.session.create({ request });
+      const response = await this._context.session.create({
+        ...request,
+        options,
+      });
 
       return response;
     } catch (error) {
@@ -28,9 +34,9 @@ export class SessionRepository implements SessionRepositoryInterface {
   /**
    * Obtener todos los elementos.
    * @param options - parámetro de búsqueda.
-   * @returns {Promise<SessionResponseDto[]>}
+   * @returns {Promise<Session[]>}
    */
-  async getAll(options?: FindOptions): Promise<SessionResponseDto[]> {
+  async getAll(options?: FindOptions): Promise<Session[]> {
     try {
       const response = await this._context.session.findAll(options);
 
@@ -43,9 +49,9 @@ export class SessionRepository implements SessionRepositoryInterface {
   /**
    * Obtener un elemento.
    * @param options - parámetro de búsqueda.
-   * @returns {Promise<SessionResponseDto>}
+   * @returns {Promise<Session>}
    */
-  async getOne(options: FindOptions): Promise<SessionResponseDto> {
+  async getOne(options: FindOptions): Promise<Session> {
     try {
       const response = await this._context.session.findOne(options);
 
@@ -63,12 +69,12 @@ export class SessionRepository implements SessionRepositoryInterface {
    * Actualizar un elemento.
    * @param options - parámetro de búsqueda.
    * @param request - datos actualizar.
-   * @returns {Promise<SessionResponseDto>}
+   * @returns {Promise<Session>}
    */
   async update(
-    options: UpdateOptions<SessionRequestDto>,
-    request: SessionRequestDto
-  ): Promise<SessionResponseDto> {
+    request: SessionRequestDto,
+    options: UpdateOptions
+  ): Promise<Session> {
     try {
       await this._context.session.update(request, options);
 
@@ -87,9 +93,9 @@ export class SessionRepository implements SessionRepositoryInterface {
   /**
    * Eliminar un elemento.
    * @param options - parámetro de búsqueda.
-   * @returns {Promise<SessionResponseDto>}
+   * @returns {Promise<Session>}
    */
-  async delete(options: UpdateOptions): Promise<SessionResponseDto> {
+  async delete(options: UpdateOptions): Promise<Session> {
     try {
       await this._context.session.destroy(options);
 

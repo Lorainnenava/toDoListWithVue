@@ -1,4 +1,5 @@
-import { FindOptions, UpdateOptions } from "sequelize";
+import { CreateOptions, FindOptions, UpdateOptions } from "sequelize";
+import { TaskTagRequestDto } from "../../../taskTag/dto/request/taskTagRequestDto";
 import { TaskTag } from "../../../taskTag/taskTagModel";
 
 export interface TaskTagRepositoryInterface {
@@ -7,21 +8,21 @@ export interface TaskTagRepositoryInterface {
    * @param request - Datos a crear.
    * @returns {Promise<TaskTag>}
    */
-  create(request: TaskTag): Promise<TaskTag>;
+  create(request: TaskTagRequestDto, options?: CreateOptions): Promise<TaskTag>;
 
   /**
    * Obtener todos los elementos.
    * @param options - Parámetros de búsqueda.
    * @returns {Promise<TaskTag[]>}
    */
-  getAll(options?: FindOptions<TaskTag>): Promise<TaskTag[]>;
+  getAll(options?: FindOptions<TaskTagRequestDto>): Promise<TaskTag[]>;
 
   /**
    * Obtener un elemento.
    * @param options - Parámetros de búsqueda.
    * @returns {Promise<TaskTag>}
    */
-  getOne(options: FindOptions<TaskTag>): Promise<TaskTag | null>;
+  getOne(options: FindOptions<TaskTagRequestDto>): Promise<TaskTag | null>;
 
   /**
    * Actualizar un elemento.
@@ -29,12 +30,12 @@ export interface TaskTagRepositoryInterface {
    * @param request - Datos para actualizar.
    * @returns {Promise<TaskTag>}
    */
-  update(options: UpdateOptions<TaskTag>, request: TaskTag): Promise<TaskTag>;
+  update(request: TaskTag, options: UpdateOptions): Promise<TaskTag>;
 
   /**
    * Eliminar un elemento.
    * @param options - Parámetros de búsqueda.
    * @returns {Promise<TaskTag>}
    */
-  delete(options: FindOptions<TaskTag>): Promise<TaskTag>;
+  delete(options: FindOptions<TaskTagRequestDto>): Promise<TaskTag>;
 }

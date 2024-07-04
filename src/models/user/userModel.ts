@@ -46,6 +46,6 @@ export class User extends Model {
    * Definición de la columna state
    */
   @AutoMap()
-  @Column({ type: DataTypes.BOOLEAN, defaultValue: false })
-  declare state?: boolean;
+  @Column({ type: DataTypes.NUMBER, defaultValue: 2 })
+  declare state?: number;
 }

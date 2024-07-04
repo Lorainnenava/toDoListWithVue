@@ -1,4 +1,5 @@
-import { FindOptions, UpdateOptions } from "sequelize";
+import { CreateOptions, FindOptions, UpdateOptions } from "sequelize";
+import { TagRequestDto } from "../../../tag/dto/request/tagRequestDto";
 import { Tag } from "../../../tag/tagModel";
 
 export interface TagRepositoryInterface {
@@ -7,21 +8,21 @@ export interface TagRepositoryInterface {
    * @param request - Datos a crear.
    * @returns {Promise<Tag>}
    */
-  create(request: Tag): Promise<Tag>;
+  create(request: TagRequestDto, options?: CreateOptions): Promise<Tag>;
 
   /**
    * Obtener todos los elementos.
    * @param options - Parámetros de búsqueda.
    * @returns {Promise<Tag[]>}
    */
-  getAll(options?: FindOptions<Tag>): Promise<Tag[]>;
+  getAll(options?: FindOptions<TagRequestDto>): Promise<Tag[]>;
 
   /**
    * Obtener un elemento.
    * @param options - Parámetros de búsqueda.
    * @returns {Promise<Tag>}
    */
-  getOne(options: FindOptions<Tag>): Promise<Tag | null>;
+  getOne(options: FindOptions<TagRequestDto>): Promise<Tag | null>;
 
   /**
    * Actualizar un elemento.
@@ -29,12 +30,12 @@ export interface TagRepositoryInterface {
    * @param request - Datos para actualizar.
    * @returns {Promise<Tag>}
    */
-  update(options: UpdateOptions<Tag>, request: Tag): Promise<Tag>;
+  update(request: TagRequestDto, options: UpdateOptions): Promise<Tag>;
 
   /**
    * Eliminar un elemento.
    * @param options - Parámetros de búsqueda.
    * @returns {Promise<Tag>}
    */
-  delete(options: FindOptions<Tag>): Promise<Tag>;
+  delete(options: FindOptions<TagRequestDto>): Promise<Tag>;
 }

@@ -5,6 +5,7 @@ import { SessionResponseDto } from "../../models/session/dto/response/sessionRes
 import { RepositoryDependencies } from "../../repositories/repositorioDependencies";
 import { ComparePassword } from "../../utils";
 import { JwtService } from "../../utils/jwt";
+import { connection } from "../../config/configDb";
 
 /**
  * Class SessionCreate
@@ -19,6 +20,8 @@ export class SessionCreateService implements SessionCreateServiceInterface {
   constructor(private readonly _jwtService: JwtService) {}
 
   async handle(request: SessionRequestDto): Promise<SessionResponseDto> {
+    const transaction = await connection.transaction();
+
     try {
       // Validar que todos los datos requeridos están presentes
       const errors = await validate(request);
@@ -29,10 +32,10 @@ export class SessionCreateService implements SessionCreateServiceInterface {
 
       // Busca si este usuario existe
       const searchUser = await this._repository.userRepository.getOne({
-        where: { email: request?.email },
+        where: { email: request?.email, transaction },
       });
 
-      if (!searchUser || searchUser?.code) {
+      if (!searchUser || searchUser?.code || searchUser?.state === 2) {
         throw new Error("Este usuario no existe.");
       }
 
@@ -48,6 +51,7 @@ export class SessionCreateService implements SessionCreateServiceInterface {
 
       const existedSesion = await this._repository.sessionRepository.getOne({
         where: { idUser: searchUser?.id },
+        transaction,
       });
 
       let session: SessionResponseDto;
@@ -64,8 +68,8 @@ export class SessionCreateService implements SessionCreateServiceInterface {
 
         try {
           session = await this._repository.sessionRepository.update(
-            { where: { id: existedSesion?.id } },
-            existedSesion
+            existedSesion,
+            { where: { id: existedSesion?.id }, transaction }
           );
         } catch (error) {
           throw new Error("Error al actualizar la sesión");
@@ -79,17 +83,23 @@ export class SessionCreateService implements SessionCreateServiceInterface {
 
         try {
           // Crea la sesión
-          session = await this._repository.sessionRepository.create({
-            ...request,
-            token,
-          });
+          session = await this._repository.sessionRepository.create(
+            {
+              ...request,
+              token,
+            },
+            { transaction }
+          );
         } catch (error) {
           throw new Error("Error al crear la sesión");
         }
       }
 
+      await transaction.commit();
+
       return session;
     } catch (error) {
+      await transaction.rollback();
       throw error;
     }
   }

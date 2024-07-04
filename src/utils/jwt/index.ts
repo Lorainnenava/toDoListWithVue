@@ -1,8 +1,10 @@
-import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
+import jwt from "jsonwebtoken";
+import { Service } from "typedi";
 
 dotenv.config();
 
+@Service()
 export class JwtService {
   async create(data: object): Promise<string> {
     try {

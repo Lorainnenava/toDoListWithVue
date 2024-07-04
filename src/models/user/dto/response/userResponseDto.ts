@@ -11,5 +11,5 @@ export class UserResponseDto {
   public password?: string;
 
   @AutoMap()
-  public state?: boolean;
+  public state?: number;
 }
