@@ -1,7 +1,7 @@
 import { CreateOptions, FindOptions, UpdateOptions } from "sequelize";
 import { SessionRepositoryInterface } from "../../models/interface/repositories/session/sessionRepositoryInterface";
 import { SessionRequestDto } from "../../models/session/dto/request/sessionRequestDto";
-import { Session } from "../../models/session/sessionModel";
+import { Session } from "../../models/session/model/sessionModel";
 import { context } from "../context";
 
 export class SessionRepository implements SessionRepositoryInterface {

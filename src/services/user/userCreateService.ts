@@ -6,12 +6,11 @@ import { mapper } from "../../config/mapper";
 import { UserCreateServiceInterface } from "../../models/interface/services/user/IUserCreateService";
 import { UserRequestDto } from "../../models/user/dto/request/userRequestDto";
 import { UserResponseDto } from "../../models/user/dto/response/userResponseDto";
-import { User } from "../../models/user/userModel";
+import { User } from "../../models/user/model/userModel";
 import { RepositoryDependencies } from "../../repositories/repositorioDependencies";
 import { CodeRandom } from "../../utils";
 import { EmailHandle } from "../../utils/services/email/emailHandle";
 import { emailConfirmationTemplate } from "../../utils/template/emailConfirmationTemplate";
-import { UserMapper } from "../mapper/user/userMapper";
 
 /**
  * Class UserCreate
@@ -24,10 +23,17 @@ export class UserCreateService implements UserCreateServiceInterface {
    */
   private _repository = RepositoryDependencies;
 
-  constructor(private readonly _emailHandle: EmailHandle) {
-    UserMapper.defineMapper();
-  }
+  /**
+   * Constructor
+   * @param _emailHandle - instancia de EmailHandle
+   */
+  constructor(private readonly _emailHandle: EmailHandle) {}
 
+  /**
+   * Maneja la creación de usuarios
+   * @param request - {UserRequestDto}
+   * @returns {Promise<UserResponseDto>}
+   */
   async handle(request: UserRequestDto): Promise<UserResponseDto> {
     const transaction = await connection.transaction();
 
@@ -39,19 +45,21 @@ export class UserCreateService implements UserCreateServiceInterface {
         throw new Error("Enviar todos los datos.");
       }
 
-      const exist = await this._repository.userRepository.getOne({
+      // Verifica si ya existe este usuario
+      const isUserExist = await this._repository.userRepository.getOne({
         where: {
           [Op.or]: [{ email: request?.email }, { userName: request?.userName }],
         },
       });
 
-      if (exist) {
+      if (isUserExist) {
         throw new Error(
           "Ya existe un usuario con este email o nombre de usuario."
         );
       }
 
-      const requestMapper = mapper.map(request, User, UserRequestDto);
+      // Convierte la data de tipo modelo a tipo response
+      const mappedData = mapper.map(request, User, UserRequestDto);
 
       // Generar un código aleatorio único y verificar si ya existe en la base de datos
       let codeGenerate: string;
@@ -66,7 +74,7 @@ export class UserCreateService implements UserCreateServiceInterface {
 
       // Crear usuario
       const createUser = await this._repository.userRepository.create({
-        ...requestMapper,
+        ...mappedData,
         code: codeGenerate,
       });
 

@@ -1,6 +1,6 @@
 import { CreateOptions, FindOptions, UpdateOptions } from "sequelize";
 import { TaskRequestDto } from "../../../task/dto/request/taskRequestDto";
-import { Task } from "../../../task/taskModel";
+import { Task } from "../../../task/model/taskModel";
 
 export interface TaskRepositoryInterface {
   /**

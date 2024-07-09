@@ -8,12 +8,12 @@ import {
   Model,
   Table,
 } from "sequelize-typescript";
-import { State } from "../state/stateModel";
-import { Tag } from "../tag/tagModel";
-import { TaskTag } from "../taskTag/taskTagModel";
-import { User } from "../user/userModel";
+import { State } from "../../state/model/stateModel";
+import { Tag } from "../../tag/model/tagModel";
+import { TaskTag } from "../../taskTag/model/taskTagModel";
+import { User } from "../../user/model/userModel";
 
-@Table({ tableName: "Taks", timestamps: true })
+@Table({ tableName: "Tasks", timestamps: true })
 /**
  * Definición de la clase Task como un modelo Sequelize
  */
@@ -58,7 +58,7 @@ export class Task extends Model {
   /**
    * Relación con la tabla User
    */
-  @BelongsTo(() => User, { foreignKey: "idUser" })
+  @BelongsTo(() => User)
   declare user?: User;
 
   /**

@@ -1,6 +1,6 @@
 import { CreateOptions, FindOptions, UpdateOptions } from "sequelize";
 import { TaskTagRequestDto } from "../../../taskTag/dto/request/taskTagRequestDto";
-import { TaskTag } from "../../../taskTag/taskTagModel";
+import { TaskTag } from "../../../taskTag/model/taskTagModel";
 
 export interface TaskTagRepositoryInterface {
   /**

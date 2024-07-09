@@ -7,8 +7,8 @@ import {
   Model,
   Table,
 } from "sequelize-typescript";
-import { Tag } from "../tag/tagModel";
-import { Task } from "../task/taskModel";
+import { Tag } from "../../tag/model/tagModel";
+import { Task } from "../../task/model/taskModel";
 
 @Table({ tableName: "TaskTags", timestamps: true })
 /**

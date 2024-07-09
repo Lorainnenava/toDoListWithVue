@@ -1,6 +1,7 @@
 import { AutoMap } from "@automapper/classes";
 import { DataTypes } from "sequelize";
-import { Column, Model, Table } from "sequelize-typescript";
+import { Column, HasMany, Model, Table } from "sequelize-typescript";
+import { Task } from "../../task/model/taskModel";
 
 @Table({ tableName: "Users", timestamps: true })
 /**
@@ -46,6 +47,12 @@ export class User extends Model {
    * Definición de la columna state
    */
   @AutoMap()
-  @Column({ type: DataTypes.NUMBER, defaultValue: 2 })
+  @Column({ type: DataTypes.INTEGER, defaultValue: 2 })
   declare state?: number;
+
+  /**
+   * Relación con la tabla User
+   */
+  @HasMany(() => Task)
+  declare tasks?: Task[];
 }

@@ -9,6 +9,7 @@ import Container from "typedi";
 import authenticateDB from "./config/configDb";
 import { ConfigSwagger } from "./config/swagger";
 import { ControllerDependencies } from "./controllers/controllerDependencies";
+import { initializeMappers } from "./services/mapper/mapperInitialize";
 
 // configures dotenv to work in your application
 const app: Express = createExpressServer(ControllerDependencies);
@@ -30,6 +31,9 @@ app.use(
 );
 
 app.use(bodyParser.json());
+
+// inicializar los mappers
+initializeMappers();
 
 const swagger = ConfigSwagger(ControllerDependencies);
 

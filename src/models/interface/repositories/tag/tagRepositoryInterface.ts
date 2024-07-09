@@ -1,6 +1,6 @@
 import { CreateOptions, FindOptions, UpdateOptions } from "sequelize";
 import { TagRequestDto } from "../../../tag/dto/request/tagRequestDto";
-import { Tag } from "../../../tag/tagModel";
+import { Tag } from "../../../tag/model/tagModel";
 
 export interface TagRepositoryInterface {
   /**

@@ -8,6 +8,11 @@ export class TagRequestDto {
   public id?: number;
 
   @AutoMap()
+  @IsNumber()
+  @IsOptional()
+  public idUser?: number;
+
+  @AutoMap()
   @IsString()
   @IsNotEmpty()
   public name?: string;

@@ -6,6 +6,9 @@ export class TagResponseDto {
   public id?: number;
 
   @AutoMap()
+  public idUser?: number;
+
+  @AutoMap()
   public name?: string;
 
   @AutoMap(() => [TaskResponseDto])

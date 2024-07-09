@@ -2,7 +2,7 @@ import { createMap } from "@automapper/core";
 import { mapper } from "../../../config/mapper";
 import { UserRequestDto } from "../../../models/user/dto/request/userRequestDto";
 import { UserResponseDto } from "../../../models/user/dto/response/userResponseDto";
-import { User } from "../../../models/user/userModel";
+import { User } from "../../../models/user/model/userModel";
 
 export class UserMapper {
   static defineMapper(): void {

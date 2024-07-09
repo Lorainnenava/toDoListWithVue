@@ -1,24 +1,40 @@
 import { validate } from "class-validator";
+import { Service } from "typedi";
+import { connection } from "../../config/configDb";
+import { mapper } from "../../config/mapper";
 import { SessionCreateServiceInterface } from "../../models/interface/services/session/ISessionCreateService";
 import { SessionRequestDto } from "../../models/session/dto/request/sessionRequestDto";
 import { SessionResponseDto } from "../../models/session/dto/response/sessionResponseDto";
+import { Session } from "../../models/session/model/sessionModel";
+import { UserResponseDto } from "../../models/user/dto/response/userResponseDto";
+import { User } from "../../models/user/model/userModel";
 import { RepositoryDependencies } from "../../repositories/repositorioDependencies";
 import { ComparePassword } from "../../utils";
 import { JwtService } from "../../utils/jwt";
-import { connection } from "../../config/configDb";
 
 /**
  * Class SessionCreate
  * @implements {SessionCreateServiceInterface}
  */
+
+@Service()
 export class SessionCreateService implements SessionCreateServiceInterface {
   /**
    * Instancia del repositorio
    */
   private _repository = RepositoryDependencies;
 
+  /**
+   * Constructor
+   * @param _jwtService - instancia de JwtService
+   */
   constructor(private readonly _jwtService: JwtService) {}
 
+  /**
+   *  Maneja el inicio sesión.
+   * @param request - {SessionRequestDto}
+   * @returns {Promise<SessionResponseDto>}
+   */
   async handle(request: SessionRequestDto): Promise<SessionResponseDto> {
     const transaction = await connection.transaction();
 
@@ -32,24 +48,30 @@ export class SessionCreateService implements SessionCreateServiceInterface {
 
       // Busca si este usuario existe
       const searchUser = await this._repository.userRepository.getOne({
-        where: { email: request?.email, transaction },
+        where: { email: request?.email },
+        transaction,
       });
 
-      if (!searchUser || searchUser?.code || searchUser?.state === 2) {
+      // Convierte la data de tipo modelo a tipo response
+      const mappedData = mapper.map(searchUser, User, UserResponseDto);
+
+      // Si la data no viene, o tiene codigo, o el state es 2 el usuario no ha sido habilitado
+      if (!mappedData || mappedData?.code || mappedData?.state === 2) {
         throw new Error("Este usuario no existe.");
       }
 
       // Compara las contraseñas
-      const passwordCorrect = await ComparePassword(
+      const isPasswordCorrect = await ComparePassword(
         request?.password!,
         searchUser?.password!
       );
 
-      if (!passwordCorrect) {
-        throw new Error("Datos inválidos.");
+      if (!isPasswordCorrect) {
+        throw new Error("La contraseña es incorrecta.");
       }
 
-      const existedSesion = await this._repository.sessionRepository.getOne({
+      // Verifica si ya existe una Sesion activa
+      const existingSession = await this._repository.sessionRepository.getOne({
         where: { idUser: searchUser?.id },
         transaction,
       });
@@ -57,19 +79,21 @@ export class SessionCreateService implements SessionCreateServiceInterface {
       let session: SessionResponseDto;
       let token: string;
 
-      if (existedSesion) {
-        // Actualiza el token
-        existedSesion.token = await this._jwtService.create({
+      // Si existe me refresca el token de lo contrario crea la sesión
+      if (existingSession) {
+        // refresca el token
+        existingSession.token = await this._jwtService.create({
           email: request?.email,
           idUser: request?.idUser,
         });
 
-        token = existedSesion.token;
+        token = existingSession.token;
 
         try {
+          // actualiza la sesión
           session = await this._repository.sessionRepository.update(
-            existedSesion,
-            { where: { id: existedSesion?.id }, transaction }
+            existingSession,
+            { where: { id: existingSession?.id }, transaction }
           );
         } catch (error) {
           throw new Error("Error al actualizar la sesión");
@@ -97,7 +121,9 @@ export class SessionCreateService implements SessionCreateServiceInterface {
 
       await transaction.commit();
 
-      return session;
+      const response = mapper.map(session, Session, SessionResponseDto);
+
+      return response;
     } catch (error) {
       await transaction.rollback();
       throw error;

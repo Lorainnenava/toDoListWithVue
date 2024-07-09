@@ -1,11 +1,9 @@
-import { FindOptions } from "sequelize";
-import { StateRequestDto } from "../../../state/dto/request/stateRequestDto";
 import { StateResponseDto } from "../../../state/dto/response/stateResponseDto";
 
 export interface StateGetAllServiceInterface {
   /**
-   * Maneja la creación de un elemento.
-   * @param request {FindOptions<StateRequestDto>}
+   * Maneja la obtención de todos los elementos.
+   * @param request
    */
-  handle(request?: FindOptions<StateRequestDto>): Promise<StateResponseDto[]>;
+  handle(idUser: number): Promise<StateResponseDto[]>;
 }

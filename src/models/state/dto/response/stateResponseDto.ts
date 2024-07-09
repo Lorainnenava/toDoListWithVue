@@ -1,4 +1,5 @@
 import { AutoMap } from "@automapper/classes";
+import { TaskResponseDto } from "../../../task/dto/response/taskResponseDto";
 
 export class StateResponseDto {
   @AutoMap()
@@ -7,6 +8,6 @@ export class StateResponseDto {
   @AutoMap()
   public name?: string;
 
-  @AutoMap()
-  public color?: string;
+  @AutoMap(() => [TaskResponseDto])
+  public tasks?: TaskResponseDto[];
 }

@@ -1,7 +1,7 @@
 import { CreateOptions, FindOptions, UpdateOptions } from "sequelize";
 import { UserRepositoryInterface } from "../../models/interface/repositories/user/userRepositoryInterface";
 import { UserRequestDto } from "../../models/user/dto/request/userRequestDto";
-import { User } from "../../models/user/userModel";
+import { User } from "../../models/user/model/userModel";
 import { Context } from "../context";
 
 export class UserRepository implements UserRepositoryInterface {

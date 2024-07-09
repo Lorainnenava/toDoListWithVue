@@ -1,6 +1,6 @@
 import { CreateOptions, FindOptions, UpdateOptions } from "sequelize";
 import { SessionRequestDto } from "../../../session/dto/request/sessionRequestDto";
-import { Session } from "../../../session/sessionModel";
+import { Session } from "../../../session/model/sessionModel";
 
 export interface SessionRepositoryInterface {
   /**

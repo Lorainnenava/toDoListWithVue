@@ -1,14 +1,13 @@
 import { AutoMap } from "@automapper/classes";
 import { DataTypes } from "sequelize";
-import { BelongsToMany, Column, Model, Table } from "sequelize-typescript";
-import { Task } from "../task/taskModel";
-import { TaskTag } from "../taskTag/taskTagModel";
+import { Column, HasMany, Model, Table } from "sequelize-typescript";
+import { Task } from "../../task/model/taskModel";
 
-@Table({ tableName: "Tags", timestamps: true })
+@Table({ tableName: "States", timestamps: true })
 /**
- * Definición de la clase Tag como un modelo Sequelize
+ * Definición de la clase State como un modelo Sequelize
  */
-export class Tag extends Model {
+export class State extends Model {
   /**
    * Definición de la columna id
    */
@@ -24,9 +23,9 @@ export class Tag extends Model {
   declare name?: string;
 
   /**
-   * Relación con la tabla TaskTag
+   * Relación con la tabla task
    */
-  @BelongsToMany(() => Task, () => TaskTag)
+  @HasMany(() => Task)
   @AutoMap(() => [Task])
   declare tasks?: Task[];
 }

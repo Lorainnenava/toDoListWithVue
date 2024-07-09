@@ -11,9 +11,4 @@ export class StateRequestDto {
   @IsString()
   @IsNotEmpty()
   public name?: string;
-
-  @AutoMap()
-  @IsString()
-  @IsNotEmpty()
-  public color?: string;
 }

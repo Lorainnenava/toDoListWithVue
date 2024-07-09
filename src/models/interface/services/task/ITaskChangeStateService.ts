@@ -1,9 +1,9 @@
 import { TaskResponseDto } from "../../../task/dto/response/taskResponseDto";
 
-export interface TaskUpdateStateServiceInterface {
+export interface TaskChangeStateServiceInterface {
   /**
    * Maneja la actualización de un elemento.
    * @param request {idState}
    */
-  handle(idState: number): Promise<TaskResponseDto>;
+  handle(id: number, idState: number): Promise<TaskResponseDto>;
 }

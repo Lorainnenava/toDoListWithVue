@@ -1,20 +1,34 @@
-import { Body, JsonController, Param, Post } from "routing-controllers";
+import {
+  Body,
+  Get,
+  JsonController,
+  Param,
+  Post,
+  Put,
+} from "routing-controllers";
 import { Service } from "typedi";
 import { UserRequestDto } from "../../models/user/dto/request/userRequestDto";
 import { UserResponseDto } from "../../models/user/dto/response/userResponseDto";
-import { UserCreateService } from "../../services/user/userCreate";
-import { UserValidateService } from "../../services/user/validateUser";
+import { UserCreateService } from "../../services/user/userCreateService";
+import { UserGetByIdService } from "../../services/user/userGetByIdService";
+import { UserUpdateService } from "../../services/user/userUpdateService";
+import { UserValidateService } from "../../services/user/validateUserService";
 
 @Service()
-@JsonController("/users")
+@JsonController("/user")
 export class UserController {
   /**
    * Constructor
-   * @param _userCreateService {UserCreateService}
+   * @param _userCreateService - {UserCreateService}
+   * @param _userValidateService - {UserValidateService}
+   * @param _userGetByIdService - {UserGetByIdService}
+   * @param _userUpdateService - {UserUpdateService}
    */
   constructor(
     private _userCreateService: UserCreateService,
-    private _userValidateService: UserValidateService
+    private _userValidateService: UserValidateService,
+    private _userGetByIdService: UserGetByIdService,
+    private _userUpdateService: UserUpdateService
   ) {}
 
   @Post("/create")
@@ -22,8 +36,21 @@ export class UserController {
     return await this._userCreateService.handle(body);
   }
 
-  @Post("/validateUser")
+  @Post("/validateUser/:code")
   async validateUser(@Param("code") code: string): Promise<boolean> {
     return await this._userValidateService.handle(code);
+  }
+
+  @Get("/getById/:id")
+  async getById(@Param("id") id: number): Promise<UserResponseDto> {
+    return await this._userGetByIdService.handle(id);
+  }
+
+  @Put("/update/:id")
+  async update(
+    @Param("id") id: number,
+    @Body() body: UserRequestDto
+  ): Promise<UserResponseDto> {
+    return await this._userUpdateService.handle(id, body);
   }
 }

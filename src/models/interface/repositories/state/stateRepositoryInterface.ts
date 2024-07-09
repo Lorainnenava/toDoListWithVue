@@ -1,6 +1,6 @@
 import { CreateOptions, FindOptions, UpdateOptions } from "sequelize";
 import { StateRequestDto } from "../../../state/dto/request/stateRequestDto";
-import { State } from "../../../state/stateModel";
+import { State } from "../../../state/model/stateModel";
 
 export interface StateRepositoryInterface {
   /**
