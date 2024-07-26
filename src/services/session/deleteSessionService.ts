@@ -4,8 +4,6 @@ import { mapper } from "../../config/mapper";
 import { SessionDeleteServiceInterface } from "../../models/interface/services/session/ISessionDeleteService";
 import { SessionResponseDto } from "../../models/session/dto/response/sessionResponseDto";
 import { Session } from "../../models/session/model/sessionModel";
-import { UserResponseDto } from "../../models/user/dto/response/userResponseDto";
-import { User } from "../../models/user/model/userModel";
 import { RepositoryDependencies } from "../../repositories/repositorioDependencies";
 
 /**
@@ -38,28 +36,28 @@ export class SessionDeleteService implements SessionDeleteServiceInterface {
         throw new Error("El idUser es requerido.");
       }
 
-      // Busca si este usuario existe.
-      const searchUser = await this._repository.sessionRepository.getOne({
+      // Busca si esta sesión existe.
+      const searchSession = await this._repository.sessionRepository.getOne({
         where: { idUser },
         transaction,
       });
 
-      if (!searchUser) {
-        throw new Error("Esta usuario no existe");
+      if (!searchSession) {
+        throw new Error("Esta sesión no existe");
       }
 
       // Convierte la data de tipo modelo a tipo response.
-      const mappedData = mapper.map(searchUser, Session, SessionResponseDto);
+      const mappedData = mapper.map(searchSession, Session, SessionResponseDto);
 
-      // Actualiza la contraseña del usuario.
-      const updatePassword = await this._repository.userRepository.delete({
+      // Elimina la sesión.
+      const deleteSession = await this._repository.sessionRepository.delete({
         where: { id: mappedData?.id },
         transaction,
       });
 
       await transaction.commit();
 
-      const response = mapper.map(updatePassword, User, UserResponseDto);
+      const response = mapper.map(deleteSession, Session, SessionResponseDto);
 
       return response;
     } catch (error) {

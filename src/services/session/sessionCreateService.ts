@@ -79,21 +79,33 @@ export class SessionCreateService implements SessionCreateServiceInterface {
       let session: SessionResponseDto;
       let token: string;
 
+      // Convierte la data de tipo modelo a tipo response
+      const mappedSessionData = mapper.map(
+        existingSession,
+        Session,
+        SessionResponseDto
+      );
+
       // Si existe me refresca el token de lo contrario crea la sesión
-      if (existingSession) {
+      if (mappedSessionData) {
         // refresca el token
-        existingSession.token = await this._jwtService.create({
+        mappedSessionData.token = await this._jwtService.create({
           email: request?.email,
-          idUser: request?.idUser,
+          idUser: mappedData?.id,
         });
 
-        token = existingSession.token;
+        token = mappedSessionData.token;
 
         try {
           // actualiza la sesión
           session = await this._repository.sessionRepository.update(
-            existingSession,
-            { where: { id: existingSession?.id }, transaction }
+            mappedSessionData,
+            {
+              where: {
+                id: mappedSessionData?.id,
+              },
+              transaction,
+            }
           );
         } catch (error) {
           throw new Error("Error al actualizar la sesión");
@@ -102,7 +114,7 @@ export class SessionCreateService implements SessionCreateServiceInterface {
         // Crea el token
         token = await this._jwtService.create({
           email: request?.email,
-          idUser: request?.idUser,
+          idUser: mappedData?.id,
         });
 
         try {
@@ -110,6 +122,7 @@ export class SessionCreateService implements SessionCreateServiceInterface {
           session = await this._repository.sessionRepository.create(
             {
               ...request,
+              idUser: mappedData?.id,
               token,
             },
             { transaction }

@@ -8,7 +8,7 @@ import { UserRequestDto } from "../../models/user/dto/request/userRequestDto";
 import { UserResponseDto } from "../../models/user/dto/response/userResponseDto";
 import { User } from "../../models/user/model/userModel";
 import { RepositoryDependencies } from "../../repositories/repositorioDependencies";
-import { CodeRandom } from "../../utils";
+import { CodeRandom, EncryptPassword } from "../../utils";
 import { EmailHandle } from "../../utils/services/email/emailHandle";
 import { emailConfirmationTemplate } from "../../utils/template/emailConfirmationTemplate";
 
@@ -72,10 +72,14 @@ export class UserCreateService implements UserCreateServiceInterface {
         });
       } while (userWithCode !== null);
 
+      // Encripta la contraseña recibida.
+      const encryptPassword = await EncryptPassword(request?.password ?? "");
+
       // Crear usuario
       const createUser = await this._repository.userRepository.create({
         ...mappedData,
         code: codeGenerate,
+        password: encryptPassword,
       });
 
       // Enviar correo de confirmación de registro.

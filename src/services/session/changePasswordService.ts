@@ -7,6 +7,7 @@ import { SessionRequestDto } from "../../models/session/dto/request/sessionReque
 import { UserResponseDto } from "../../models/user/dto/response/userResponseDto";
 import { User } from "../../models/user/model/userModel";
 import { RepositoryDependencies } from "../../repositories/repositorioDependencies";
+import { EncryptPassword } from "../../utils";
 
 /**
  * Class ChangePassword
@@ -54,9 +55,12 @@ export class ChangePasswordService implements ChangePasswordServiceInterface {
       // Convierte la data de tipo modelo a tipo response.
       const mappedData = mapper.map(searchUser, User, UserResponseDto);
 
+      // Encripta la nueva contraseña.
+      const encryptPassword = await EncryptPassword(request?.password ?? "");
+
       // Actualiza la contraseña del usuario.
       const updatePassword = await this._repository.userRepository.update(
-        { ...mappedData, password: request?.password },
+        { ...mappedData, password: encryptPassword },
         { where: { id: mappedData?.id }, transaction }
       );
 

@@ -22,7 +22,7 @@ export interface SessionRepositoryInterface {
    * @param options - Parámetros de búsqueda.
    * @returns {Promise<Session>}
    */
-  getOne(options: FindOptions<SessionRequestDto>): Promise<Session>;
+  getOne(options: FindOptions<SessionRequestDto>): Promise<Session | null>;
 
   /**
    * Actualizar un elemento.

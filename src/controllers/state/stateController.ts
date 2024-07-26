@@ -13,7 +13,9 @@ export class StateController {
   constructor(private _stateGetAllService: StateGetAllService) {}
 
   @Get("/getAllByIdUser/:idUser")
-  async create(@Param("idUser") idUser: number): Promise<UserResponseDto[]> {
+  async getAllByIdUser(
+    @Param("idUser") idUser: number
+  ): Promise<UserResponseDto[]> {
     return await this._stateGetAllService.handle(idUser);
   }
 }

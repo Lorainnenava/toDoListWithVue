@@ -51,12 +51,12 @@ export class SessionRepository implements SessionRepositoryInterface {
    * @param options - parámetro de búsqueda.
    * @returns {Promise<Session>}
    */
-  async getOne(options: FindOptions): Promise<Session> {
+  async getOne(options: FindOptions): Promise<Session | null> {
     try {
       const response = await this._context.session.findOne(options);
 
-      if (!response) {
-        throw new Error("Elemento no encontrado");
+      if (response === null) {
+        return null;
       }
 
       return response;
@@ -97,11 +97,11 @@ export class SessionRepository implements SessionRepositoryInterface {
    */
   async delete(options: UpdateOptions): Promise<Session> {
     try {
-      await this._context.session.destroy(options);
-
       const response = await this._context.session.findOne(options);
 
-      if (!response) {
+      await this._context.session.destroy(options);
+
+      if (response === null) {
         throw new Error("Elemento no encontrado");
       }
 
