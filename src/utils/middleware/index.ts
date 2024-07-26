@@ -1,10 +1,13 @@
 import dotenv from "dotenv";
 import jwt, { JsonWebTokenError, TokenExpiredError } from "jsonwebtoken";
 import { ExpressMiddlewareInterface } from "routing-controllers";
+import { Service } from "typedi";
+import { connection } from "../../config/configDb";
 import { RepositoryDependencies } from "../../repositories/repositorioDependencies";
 
 dotenv.config();
 
+@Service()
 export class SessionValidatorMiddleware implements ExpressMiddlewareInterface {
   /**
    * Instancia del repositorio
@@ -25,16 +28,32 @@ export class SessionValidatorMiddleware implements ExpressMiddlewareInterface {
       next();
     } catch (error) {
       if (error instanceof TokenExpiredError) {
+        const transaction = await connection.transaction();
+
         try {
           const decoded = jwt.decode(token) as {
-            email?: string;
-            idUser?: number;
+            data: {
+              email?: string;
+              idUser?: number;
+            };
           };
 
-          if (decoded?.idUser) {
-            await this._repository.sessionRepository.delete({
-              where: { idUser: decoded.idUser },
-            });
+          if (decoded?.data?.idUser) {
+            // Verificar si la sesión existe antes de eliminarla
+            const sessionExists =
+              await this._repository.sessionRepository.getOne({
+                where: { idUser: decoded.data.idUser },
+                transaction,
+              });
+
+            if (sessionExists) {
+              await this._repository.sessionRepository.delete({
+                where: { idUser: decoded.data.idUser },
+                transaction,
+              });
+            }
+
+            await transaction.commit();
 
             return res.status(401).json({ message: "La sesión expiró." });
           } else {
@@ -43,18 +62,18 @@ export class SessionValidatorMiddleware implements ExpressMiddlewareInterface {
             });
           }
         } catch (error) {
+          await transaction.rollback();
           throw error;
         }
-      }
-      if (error instanceof JsonWebTokenError) {
+      } else if (error instanceof JsonWebTokenError) {
         return res
           .status(401)
           .json({ message: "El token está mal estructurado." });
-      }
-      if (error instanceof SyntaxError) {
+      } else if (error instanceof SyntaxError) {
         return res.status(401).json({ message: "Token inesperado." });
+      } else {
+        return res.status(500).json({ message: "Error del servidor." });
       }
-      return res.status(500).json({ message: "Error del servidor." });
     }
   }
 }

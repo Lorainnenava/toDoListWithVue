@@ -19,7 +19,20 @@ export const ConfigSwagger = (
 
   // Configuración de Swagger
   const options = routingControllersToSpec(storage, routes, {
-    components: { schemas: schemas as any },
+    components: {
+      schemas: schemas as any,
+      securitySchemes: {
+        bearerAuth: {
+          type: "http",
+          in: "header",
+          name: "Authorization",
+          description: "Bearer Token",
+          scheme: "bearer",
+          bearerFormat: "JWT",
+        },
+      },
+    },
+    security: [],
     info: {
       title: "API",
       version: "0.1.0",
@@ -27,6 +40,13 @@ export const ConfigSwagger = (
         "This is a simple CRUD API application made with Express and documented with Swagger",
     },
   });
+
+  // Marca las rutas que requieren autenticación en Swagger
+  options.paths["/state/protected-route"].get.security = [
+    {
+      bearerAuth: [],
+    },
+  ];
 
   return options;
 };

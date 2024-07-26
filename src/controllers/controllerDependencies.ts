@@ -1,4 +1,6 @@
 import { RoutingControllersOptions } from "routing-controllers";
+import { SessionValidatorMiddleware } from "../utils/middleware";
+import { authorizationChecker } from "../utils/middleware/authorization";
 import { SessionController } from "./session/sessionController";
 import { StateController } from "./state/stateController";
 import { TagController } from "./tag/tagController";
@@ -13,4 +15,6 @@ export const ControllerDependencies: RoutingControllersOptions = {
     StateController,
     TaskController,
   ],
+  authorizationChecker: authorizationChecker,
+  middlewares: [SessionValidatorMiddleware],
 };

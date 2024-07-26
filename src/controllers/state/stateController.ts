@@ -1,7 +1,14 @@
-import { Get, JsonController, Param } from "routing-controllers";
+import {
+  Authorized,
+  Get,
+  JsonController,
+  Param,
+  UseBefore,
+} from "routing-controllers";
 import { Service } from "typedi";
 import { UserResponseDto } from "../../models/user/dto/response/userResponseDto";
 import { StateGetAllService } from "../../services/state/stateGetAllService";
+import { SessionValidatorMiddleware } from "../../utils/middleware";
 
 @Service()
 @JsonController("/state")
@@ -13,6 +20,8 @@ export class StateController {
   constructor(private _stateGetAllService: StateGetAllService) {}
 
   @Get("/getAllByIdUser/:idUser")
+  @UseBefore(SessionValidatorMiddleware)
+  @Authorized()
   async getAllByIdUser(
     @Param("idUser") idUser: number
   ): Promise<UserResponseDto[]> {
