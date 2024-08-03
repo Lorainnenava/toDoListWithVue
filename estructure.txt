@@ -1,0 +1,26 @@
+my-vue-project/
+│
+├── public/
+│   ├── index.html          # Archivo HTML principal
+│   ├── assets/             # Archivos estáticos (imágenes, fuentes, etc.)
+│
+├── src/
+│   ├── components/         # Componentes reutilizables
+│   │   ├── Header.vue
+│   │   └── Footer.vue
+│   ├── router/             # Configuración de rutas
+│   │   └── index.ts
+│   ├── stores/             # Configuración y gestión del estado con Pinia
+│   │   └── index.ts
+│   ├── utils/              # Funciones y utilidades generales
+│   │   ├── index.ts        
+│   │   └── regex.ts        
+│   ├── views/              # Páginas principales
+│   │   ├── Home.vue
+│   │   └── About.vue
+│   ├── App.vue             # Componente raíz
+│   ├── main.ts             # Punto de entrada de la aplicación
+│
+├── .gitignore              # Archivos y carpetas a ignorar por Git
+├── package.json            # Dependencias y scripts del proyecto
+└── tsconfig.json           # Configuración de TypeScript
