@@ -25,33 +25,33 @@ export const lowercase = (value: string) => `${value || ''}`.toLowerCase()
 export const handleValidation = (
   validations: TValidations,
   e: Event
-): string[] | string | undefined => {
+): { errors: string[]; transformedValue?: string } => {
   // Obtener el valor real
   const inputValue = (e.target as HTMLInputElement).value
 
-  let errors: string[] = []
+  const errors: string[] = []
   let transform: string | undefined = undefined
 
   for (const [key, validation] of Object.entries(validations)) {
     switch (key) {
       case 'max':
         if (typeof validation === 'number' && inputValue?.length > validation) {
-          errors = [...errors, `Maximum length is ${validation}`]
+          errors.push(`Maximum length is ${validation}`)
         }
         break
       case 'onlyLetters':
         if (validation && !regex?.onlyLetters?.execute.test(inputValue)) {
-          errors = [...errors, regex?.onlyLetters?.message]
+          errors.push(regex?.onlyLetters?.message)
         }
         break
       case 'alphanumeric':
         if (validation && !regex?.alphanumeric?.execute.test(inputValue)) {
-          errors = [...errors, regex?.alphanumeric?.message]
+          errors.push(regex?.alphanumeric?.message)
         }
         break
       case 'noSpaces':
         if (validation && !regex?.noSpaces?.execute.test(inputValue)) {
-          errors = [...errors, regex?.noSpaces?.message]
+          errors.push(regex?.noSpaces?.message)
         }
         break
       case 'onlyPositive':
@@ -59,13 +59,13 @@ export const handleValidation = (
           !regex?.onlyPositiveNumbers?.execute?.test(inputValue) &&
           validations?.onlyPositive &&
           inputValue
-        )
-          errors = [...errors, regex?.noSpaces?.message]
+        ) {
+          errors.push(regex?.noSpaces?.message)
+        }
         break
-
       case 'onlyNumbers':
         if (regex?.onlyNumbers?.execute?.test(inputValue)) {
-          errors = [...errors, regex?.onlyNumbers?.message]
+          errors.push(regex?.onlyNumbers?.message)
         }
         break
       case 'upperCase':
@@ -77,5 +77,5 @@ export const handleValidation = (
     }
   }
 
-  return errors?.length > 0 ? errors : transform
+  return { errors, transformedValue: transform }
 }

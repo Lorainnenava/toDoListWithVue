@@ -24,8 +24,10 @@ const onSubmit = handleSubmit((values) => {
   <form @submit="onSubmit">
     <CustomInput
       name="email"
+      label="Email"
       :schema="schema.fields.email"
       :validations="{ max: 5, upperCase: true }"
+      placeholder="Email"
     />
     <button>Guardar</button>
   </form>
