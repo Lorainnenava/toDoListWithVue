@@ -1,25 +1,5 @@
-<template>
-  <!-- <input
-    @blur="handleBlur"
-    v-model="fieldValue"
-    @input="handleChange"
-    :disabled="props.disabled"
-    style="border: 1px solid black"
-  />
-  <span>{{ errorMessage }}</span> -->
-  <v-text-field
-    v-model="fieldValue"
-    :label="props.label"
-    :placeholder="props.placeholder"
-    :disabled="props.disabled"
-    :error-messages="computedErrorMessage ? [computedErrorMessage] : []"
-    @blur="handleBlur"
-    @input="handleChange"
-    variant="outlined"
-  />
-</template>
-
 <script setup lang="ts">
+import { VTextField, VTextarea } from 'vuetify/components'
 import { handleValidation } from '@/utils'
 import { TValidations } from '@/utils/types'
 import { useField } from 'vee-validate'
@@ -32,7 +12,8 @@ const props = defineProps<{
   label: string
   disabled?: boolean
   placeholder?: string
-  validations: TValidations
+  type: 'text' | 'textarea'
+  validations?: TValidations
   onChange?: (e: Event) => void
 }>()
 
@@ -41,15 +22,15 @@ const {
   errorMessage: veeErrorMessage,
   handleBlur: onBlur,
   handleChange: onChange
-} = useField(() => props.name, props.schema)
+} = useField(() => props?.name, props?.schema)
 
 // Estado del error de las validaciones.
 let errorMessage = ref<string[]>([])
 
 // Computed para manejar el mensaje de error.
-const computedErrorMessage = computed(() => {
+const computedErrorMessages = computed(() => {
   // Prioriza el mensaje de error de vee-validate
-  return veeErrorMessage || (errorMessage?.value?.length > 0 ? errorMessage?.value[0] : null)
+  return veeErrorMessage?.value || errorMessage?.value[0]
 })
 
 /**
@@ -95,3 +76,19 @@ const handleChange = (e: Event) => {
   }
 }
 </script>
+
+<!-- Componente -->
+<template>
+  <component
+    :is="props.type === 'text' ? VTextField : VTextarea"
+    @blur="handleBlur"
+    variant="outlined"
+    v-model="fieldValue"
+    :label="props.label"
+    @input="handleChange"
+    :disabled="props.disabled"
+    :placeholder="props.placeholder"
+    :no-resize="props.type === 'textarea'"
+    :error-messages="computedErrorMessages"
+  />
+</template>

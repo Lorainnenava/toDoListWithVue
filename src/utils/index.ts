@@ -29,14 +29,17 @@ export const handleValidation = (
   // Obtener el valor real
   const inputValue = (e.target as HTMLInputElement).value
 
+  // Almacena los errores
   const errors: string[] = []
+
+  // Almacena el valor transformado
   let transform: string | undefined = undefined
 
   for (const [key, validation] of Object.entries(validations)) {
     switch (key) {
       case 'max':
         if (typeof validation === 'number' && inputValue?.length > validation) {
-          errors.push(`Maximum length is ${validation}`)
+          errors.push(`Máximo ${validation} caracteres`)
         }
         break
       case 'onlyLetters':
@@ -64,7 +67,7 @@ export const handleValidation = (
         }
         break
       case 'onlyNumbers':
-        if (regex?.onlyNumbers?.execute?.test(inputValue)) {
+        if (!regex?.onlyNumbers?.execute?.test(inputValue)) {
           errors.push(regex?.onlyNumbers?.message)
         }
         break

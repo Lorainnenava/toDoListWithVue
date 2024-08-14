@@ -6,4 +6,5 @@ export type TValidations = {
   noSpaces?: boolean
   max?: number
   onlyPositive?: boolean
+  onlyNumbers?: boolean
 }
