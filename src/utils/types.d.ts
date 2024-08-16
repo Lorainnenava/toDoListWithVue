@@ -8,3 +8,5 @@ export type TValidations = {
   onlyPositive?: boolean
   onlyNumbers?: boolean
 }
+
+export type TTypeFile = '.jpg' | '.jpeg' | '.png' | '.pdf' | '.csv' | '.xlsx' | '.xls'

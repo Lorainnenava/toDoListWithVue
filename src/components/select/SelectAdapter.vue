@@ -3,7 +3,7 @@ import { TValidations } from '@/utils/types'
 import { useField } from 'vee-validate'
 import { ref } from 'vue'
 
-// Props del componente.
+// Definición de las props del componente.
 const props = defineProps<{
   schema: any
   name: string
