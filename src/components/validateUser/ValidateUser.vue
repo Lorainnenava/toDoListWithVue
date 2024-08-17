@@ -2,6 +2,7 @@
 import { useValidateUserStore } from '@/stores/validationUser/validationUser'
 import { storeToRefs } from 'pinia'
 import { watch } from 'vue'
+import ButtonAdapter from '../button/ButtonAdapter.vue'
 
 // Se llama al store para manejar el estado del componente
 const store = useValidateUserStore()
@@ -47,16 +48,7 @@ watch(() => value.value, handleSubmit)
 
     <div class="text-subtitle-2 text-red-darken-2" v-if="errorMessage">{{ errorMessage }}</div>
 
-    <v-btn
-      class="my-4"
-      color="green"
-      height="40"
-      text="Verifica"
-      variant="flat"
-      width="70%"
-      @click="handleSubmit"
-    >
-    </v-btn>
+    <ButtonAdapter height="40" width="70%" name="Verifica" @click="handleSubmit" />
 
     <div class="text-caption">
       No recibiste el código?

@@ -7,6 +7,7 @@ import { computed, ref } from 'vue'
 
 // Definición de las props del componente.
 const props = defineProps<{
+  id: string
   schema: any
   name: string
   label: string
@@ -81,6 +82,7 @@ const handleChange = (e: Event) => {
 <template>
   <component
     :is="props.type === 'text' ? VTextField : VTextarea"
+    :id="props.id"
     @blur="handleBlur"
     variant="outlined"
     v-model="fieldValue"

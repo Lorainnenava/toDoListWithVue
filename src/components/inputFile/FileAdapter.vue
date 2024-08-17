@@ -5,6 +5,7 @@ import { computed } from 'vue'
 
 // Definición de las props del componente.
 const props = defineProps<{
+  id: string
   schema: any
   name: string
   label?: string
@@ -28,6 +29,7 @@ const computedAccept = computed(() => {
 <!-- Componente -->
 <template>
   <v-file-input
+    :id="props.id"
     v-model="fieldValue"
     @input="props.onChange"
     :accept="computedAccept"

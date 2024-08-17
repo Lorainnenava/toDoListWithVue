@@ -9,6 +9,7 @@ export const useValidateUserStore = defineStore('validate', {
     count: 0,
     value: '',
     error: false,
+    loading: false,
     disabled: false,
     errorMessage: ''
   }),
@@ -34,6 +35,10 @@ export const useValidateUserStore = defineStore('validate', {
 
     setDisabled(isDisabled: boolean) {
       this.disabled = isDisabled
+    },
+
+    setLoading(isLoading: boolean) {
+      this.loading = isLoading
     },
 
     clearErrors() {

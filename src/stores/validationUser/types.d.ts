@@ -4,4 +4,5 @@ export type ValidateUserT = {
   errorMessage: string
   error: boolean
   disabled: boolean
+  loading: boolean
 }

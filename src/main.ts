@@ -1,4 +1,4 @@
-import '/public/assets/main.css'
+import '../public/assets/main.css'
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
 import App from './App.vue'
@@ -10,12 +10,34 @@ import * as components from 'vuetify/components'
 import * as directives from 'vuetify/directives'
 import Toast, { POSITION, type PluginOptions } from 'vue-toastification'
 import 'vue-toastification/dist/index.css'
+import colors from '../public/styles/colorPalette'
 
 const vuetify = createVuetify({
   components,
   directives,
   icons: {
     defaultSet: 'mdi'
+  },
+  defaults: {
+    VBtn: {
+      color: 'primary',
+      variant: 'default'
+    }
+  },
+  theme: {
+    themes: {
+      light: {
+        colors: {
+          primary: colors.primary,
+          secondary: colors.secondary,
+          layout: colors.layout,
+          background: colors.background,
+          modules: colors.modules,
+          text: colors.text,
+          textError: colors.textError
+        }
+      }
+    }
   }
 })
 

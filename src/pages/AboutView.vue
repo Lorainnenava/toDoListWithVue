@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import ButtonAdapter from '@/components/button/ButtonAdapter.vue'
 import CheckboxAdapter from '@/components/checkbox/CheckboxAdapter.vue'
 import FileAdapter from '@/components/inputFile/FileAdapter.vue'
 import InputAdapter from '@/components/inputText/InputAdapter.vue'
@@ -17,7 +18,7 @@ const schema = yup.object({
   idTypeOfIdentification: yup.string().required('Campo requerido'),
   file: yup.string().required('Campo requerido'),
   fileTwo: yup.string().optional().nullable(),
-  check: yup.string().required('Campo requerido')
+  check: yup.boolean().required('Campo requerido')
 })
 
 const { handleSubmit } = useForm({
@@ -48,9 +49,12 @@ const data = [
       "
     >
       <v-container>
+        <ButtonAdapter />
+
         <v-row>
           <v-col xs="12" sm="10" md="4">
             <InputAdapter
+              id="email"
               type="text"
               name="email"
               label="Email"
@@ -62,6 +66,7 @@ const data = [
 
           <v-col xs="12" sm="10" md="4">
             <InputAdapter
+              id="phone"
               type="text"
               name="phone"
               label="Teléfono"
@@ -72,6 +77,7 @@ const data = [
           </v-col>
           <v-col xs="12" sm="10" md="4">
             <SelectAdapter
+              id="idTypeOfIdentification"
               name="idTypeOfIdentification"
               label="Tipo de identificación"
               placeholder="Tipo de identificación"
@@ -80,26 +86,26 @@ const data = [
             />
           </v-col>
           <v-col xs="12" sm="10" md="4">
-            <FileAdapter name="file" :schema="schema.fields.file" />
+            <FileAdapter id="file" name="file" :schema="schema.fields.file" />
           </v-col>
           <v-col xs="12" sm="10" md="4">
-            <FileAdapter name="fileTwo" :schema="schema.fields.fileTwo" />
+            <FileAdapter id="fileTwo" name="fileTwo" :schema="schema.fields.fileTwo" />
           </v-col>
-          <CheckboxAdapter label="Revisado" name="check" :schema="schema.fields.check" />
+          <CheckboxAdapter label="Revisado" id="check" name="check" :schema="schema.fields.check" />
           <v-col xs="12" sm="12" md="12">
             <InputAdapter
-              type="textarea"
+              id="comment"
               name="comment"
+              type="textarea"
               label="Comentario"
+              placeholder="Comentario"
               :schema="schema.fields.comment"
               :validations="{ max: 10, onlyLetters: true }"
-              placeholder="Comentario"
             />
           </v-col>
         </v-row>
       </v-container>
       <ValidateUser />
-      <button>Guardar</button>
     </form>
   </v-container>
 </template>
