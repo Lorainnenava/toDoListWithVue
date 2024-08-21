@@ -5,5 +5,9 @@ export default {
   background: '#e2eefc',
   modules: '#0f5295',
   text: '#10467c',
-  textError: '#D32F2F'
+  textError: '#D32F2F',
+  delete: '#d32f2f',
+  deleteHover: '#b12424',
+  confirmation: '#0faa36',
+  confirmationHover: '#10852e'
 }

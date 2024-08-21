@@ -3,8 +3,11 @@ import ButtonAdapter from '@/components/button/ButtonAdapter.vue'
 import CheckboxAdapter from '@/components/checkbox/CheckboxAdapter.vue'
 import FileAdapter from '@/components/inputFile/FileAdapter.vue'
 import InputAdapter from '@/components/inputText/InputAdapter.vue'
+import ModalConfirmation from '@/components/modal/ModalConfirmation.vue'
 import SelectAdapter from '@/components/select/SelectAdapter.vue'
 import ValidateUser from '@/components/validateUser/ValidateUser.vue'
+import { modalConfirmationStore } from '@/stores/modal/modalConfirmation'
+import { storeToRefs } from 'pinia'
 import { useForm } from 'vee-validate'
 import * as yup from 'yup'
 
@@ -25,6 +28,10 @@ const { handleSubmit } = useForm({
   validationSchema: schema
 })
 
+// Se llama al store para manejar el estado del componente
+const store = modalConfirmationStore()
+const { open } = storeToRefs(store)
+
 const onSubmit = handleSubmit((values) => {
   alert(JSON.stringify(values, null, 2))
 })
@@ -34,6 +41,14 @@ const data = [
   { title: 'Cédula de extranjería', value: 2 },
   { title: 'Pasaporte', value: 3 }
 ]
+
+const handleModal = () => {
+  store.setOpen(true)
+}
+
+const handleClick = () => {
+  console.log('hola')
+}
 </script>
 
 <template>
@@ -49,8 +64,21 @@ const data = [
       "
     >
       <v-container>
-        <ButtonAdapter />
-
+        <ButtonAdapter :onClick="handleClick" />
+        <v-btn
+          color="white"
+          variant="elevated"
+          @click="handleModal"
+          class="ma-2 bg-indigo"
+          icon="mdi-cloud-upload"
+        ></v-btn>
+        <ModalConfirmation
+          :modelValue="open"
+          title="Hola"
+          description="¿Está seguro de que desea continuar?"
+          actionButton="Eliminar"
+          cancelButton="No"
+        />
         <v-row>
           <v-col xs="12" sm="10" md="4">
             <InputAdapter

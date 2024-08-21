@@ -5,6 +5,19 @@ my-vue-project/
 │   ├── assets/             # Archivos estáticos (imágenes, fuentes, etc.)
 │
 ├── src/
+│   ├── api/                # Carpeta principal para la API
+│   │   ├── dtos/         # DTOs y modelos de datos
+│   │   │   ├── user/
+│   │   │   │   ├── userRequestDto.ts
+│   │   │   │   └── userResponseDto.ts
+│   │   ├── hooks/          # Hooks personalizados usando Vue Query
+│   │   │   ├── user/
+│   │   │   │   ├── useCreateUser.ts
+│   │   │   │   ├── useUpdateUser.ts
+│   │   │   │   └── useDeleteUser.ts
+│   │   ├── services/       # Servicios que interactúan con la API
+│   │   │   ├── user/
+│   │   │   │   └── userService.ts
 │   ├── components/         # Componentes reutilizables
 │   │   ├── Header.vue
 │   │   └── Footer.vue

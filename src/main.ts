@@ -1,16 +1,17 @@
-import '../public/assets/main.css'
-import { createApp } from 'vue'
-import { createPinia } from 'pinia'
-import App from './App.vue'
-import router from './router'
-import { createVuetify } from 'vuetify'
 import '@mdi/font/css/materialdesignicons.css'
-import 'vuetify/styles'
-import * as components from 'vuetify/components'
-import * as directives from 'vuetify/directives'
+import { createPinia } from 'pinia'
+import { createApp } from 'vue'
+import { VueQueryPlugin } from 'vue-query'
 import Toast, { POSITION, type PluginOptions } from 'vue-toastification'
 import 'vue-toastification/dist/index.css'
+import { createVuetify } from 'vuetify'
+import * as components from 'vuetify/components'
+import * as directives from 'vuetify/directives'
+import 'vuetify/styles'
+import '../public/assets/main.css'
 import colors from '../public/styles/colorPalette'
+import App from './App.vue'
+import router from './router'
 
 const vuetify = createVuetify({
   components,
@@ -34,7 +35,11 @@ const vuetify = createVuetify({
           background: colors.background,
           modules: colors.modules,
           text: colors.text,
-          textError: colors.textError
+          textError: colors.textError,
+          delete: colors.delete,
+          deleteHover: colors.deleteHover,
+          confirmation: colors.confirmation,
+          confirmationHover: colors.confirmationHover
         }
       }
     }
@@ -53,6 +58,8 @@ const options: PluginOptions = {
 app.use(createPinia())
 
 app.use(router)
+
+app.use(VueQueryPlugin)
 
 app.use(vuetify)
 

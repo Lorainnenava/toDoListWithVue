@@ -14,7 +14,7 @@ const { value, errorMessage, disabled, error } = storeToRefs(store)
  * Si el campo cumple con el requisito, limpia los errores.
  */
 const handleSubmit = () => {
-  if (value.value.length < 5) {
+  if (value?.value?.length < 5) {
     store.setErrorMessage('Llene todos los campos')
     store.setError(true)
   } else {
@@ -23,7 +23,7 @@ const handleSubmit = () => {
 }
 
 // Observa los cambios del campo value y ejecuta `handleSubmit` y actualiza los errores en tiempo real.
-watch(() => value.value, handleSubmit)
+watch(() => value?.value, handleSubmit)
 </script>
 
 <!--  Componente  -->
@@ -48,7 +48,7 @@ watch(() => value.value, handleSubmit)
 
     <div class="text-subtitle-2 text-red-darken-2" v-if="errorMessage">{{ errorMessage }}</div>
 
-    <ButtonAdapter height="40" width="70%" name="Verifica" @click="handleSubmit" />
+    <ButtonAdapter height="40" width="70%" name="Verifica" :onClick="handleSubmit" />
 
     <div class="text-caption">
       No recibiste el código?
