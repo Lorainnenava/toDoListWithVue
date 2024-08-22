@@ -11,12 +11,14 @@ const props = defineProps<{
   customOnChange?: (e: Event) => void
 }>()
 
+const { id, customOnChange, disabled, label, name, schema } = props
+
 // Valida el campó y maneja los errores de el
 const {
+  handleChange,
   value: fieldValue,
-  errorMessage: veeErrorMessage,
-  handleChange
-} = useField(() => props.name, props.schema, {
+  errorMessage: veeErrorMessage
+} = useField(() => name, schema, {
   type: 'checkbox',
   checkedValue: true,
   uncheckedValue: false
@@ -29,18 +31,18 @@ const {
 const onChange = (e: Event) => {
   handleChange(e)
 
-  if (props.customOnChange) props.customOnChange(e)
+  if (customOnChange) customOnChange(e)
 }
 </script>
 
 <template>
   <v-checkbox
-    :id="props.id"
+    :id="id"
     @change="onChange"
-    :label="props.label"
+    :label="label"
     v-model="fieldValue"
     :error="!!veeErrorMessage"
-    :disabled="props.disabled"
+    :disabled="disabled"
     :error-messages="veeErrorMessage"
   ></v-checkbox>
 </template>

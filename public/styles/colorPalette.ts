@@ -6,8 +6,6 @@ export default {
   modules: '#0f5295',
   text: '#10467c',
   textError: '#D32F2F',
-  delete: '#d32f2f',
-  deleteHover: '#b12424',
-  confirmation: '#0faa36',
-  confirmationHover: '#10852e'
+  cancel: '#3F51B5', // -- indigo
+  cancelHover: '#1A237E' // -- indigo-darken-4
 }

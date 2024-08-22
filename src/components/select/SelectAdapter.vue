@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { TValidations } from '@/utils/types'
 import { useField } from 'vee-validate'
 import { ref } from 'vue'
 
@@ -11,7 +10,6 @@ const props = defineProps<{
   label: string
   disabled?: boolean
   placeholder?: string
-  validations?: TValidations
   onChange?: (e: Event) => void
   data?: { title: string; value: any }[]
 }>()

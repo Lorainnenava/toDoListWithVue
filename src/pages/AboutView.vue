@@ -7,6 +7,7 @@ import ModalConfirmation from '@/components/modal/ModalConfirmation.vue'
 import SelectAdapter from '@/components/select/SelectAdapter.vue'
 import ValidateUser from '@/components/validateUser/ValidateUser.vue'
 import { modalConfirmationStore } from '@/stores/modal/modalConfirmation'
+import { regex } from '@/utils/regex'
 import { storeToRefs } from 'pinia'
 import { useForm } from 'vee-validate'
 import * as yup from 'yup'
@@ -15,9 +16,12 @@ import * as yup from 'yup'
  * schema
  */
 const schema = yup.object({
-  email: yup.string().max(5, 'Máximo 5 caracteres.').required('Campo requerido'),
-  comment: yup.string().required('Campo requerido'),
-  phone: yup.string().required('Campo requerido'),
+  email: yup.string().email().required('Campo requerido'),
+  comment: yup.string().max(500, 'Máximo 500 caracteres').required('Campo requerido'),
+  phone: yup
+    .string()
+    .required('Campo requerido')
+    .matches(regex.onlyNumbers.execute, regex.onlyNumbers.message),
   idTypeOfIdentification: yup.string().required('Campo requerido'),
   file: yup.string().required('Campo requerido'),
   fileTwo: yup.string().optional().nullable(),
@@ -52,7 +56,7 @@ const handleClick = () => {
 </script>
 
 <template>
-  <v-container class="w-100vh mt-14">
+  <v-container class="w-100vh d-flex justify-content-center">
     <form
       @submit="onSubmit"
       style="
@@ -65,19 +69,19 @@ const handleClick = () => {
     >
       <v-container>
         <ButtonAdapter :onClick="handleClick" />
-        <v-btn
-          color="white"
-          variant="elevated"
-          @click="handleModal"
-          class="ma-2 bg-indigo"
-          icon="mdi-cloud-upload"
-        ></v-btn>
+        <ButtonAdapter
+          width="48px"
+          height="48px"
+          :onlyIcon="true"
+          :onClick="handleModal"
+          prependIcon="mdi-cloud-upload"
+        />
         <ModalConfirmation
-          :modelValue="open"
-          title="Hola"
+          cancelButton="Cancelar"
+          title="Titulo del modal"
+          actionButton="Confirmar"
+          v-model:modelValue="open"
           description="¿Está seguro de que desea continuar?"
-          actionButton="Eliminar"
-          cancelButton="No"
         />
         <v-row>
           <v-col xs="12" sm="10" md="4">
@@ -86,9 +90,8 @@ const handleClick = () => {
               type="text"
               name="email"
               label="Email"
-              :schema="schema.fields.email"
-              :validations="{ max: 5, upperCase: true }"
               placeholder="Email"
+              :schema="schema.fields.email"
             />
           </v-col>
 
@@ -98,18 +101,17 @@ const handleClick = () => {
               type="text"
               name="phone"
               label="Teléfono"
-              :schema="schema.fields.phone"
-              :validations="{ max: 10, onlyNumbers: true }"
               placeholder="Teléfono"
+              :schema="schema.fields.phone"
             />
           </v-col>
           <v-col xs="12" sm="10" md="4">
             <SelectAdapter
+              :data="data"
               id="idTypeOfIdentification"
               name="idTypeOfIdentification"
               label="Tipo de identificación"
               placeholder="Tipo de identificación"
-              :data="data"
               :schema="schema.fields.idTypeOfIdentification"
             />
           </v-col>
@@ -126,9 +128,9 @@ const handleClick = () => {
               name="comment"
               type="textarea"
               label="Comentario"
+              :isLowerCase="true"
               placeholder="Comentario"
               :schema="schema.fields.comment"
-              :validations="{ max: 10, onlyLetters: true }"
             />
           </v-col>
         </v-row>

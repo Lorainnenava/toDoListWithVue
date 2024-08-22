@@ -5,11 +5,11 @@ import ButtonAdapter from '../button/ButtonAdapter.vue'
 const props = defineProps<{
   name?: string
   icon?: string
-  modelValue: boolean
   title?: string
   loading?: boolean
   disabled?: boolean
   close?: () => void
+  modelValue: boolean
   description?: string
   actionButton?: string
   cancelButton?: string
@@ -18,49 +18,52 @@ const props = defineProps<{
 
 // Define el evento que emitirá la actualización de `open`.
 const emit = defineEmits(['update:modelValue'])
-
-console.log(props.modelValue, 'xd')
 </script>
 
 <template>
   <v-dialog
+    persistent
+    width="500"
     :model-value="props.modelValue"
     @update:model-value="emit('update:modelValue', $event)"
-    width="500"
-    persistent
   >
     <v-card class="bg-white">
-      <v-card-title class="d-flex justify-space-between align-center">
-        <div class="text-h6 text-medium-emphasis ps-2">
+      <v-card-title style="height: 45px" class="d-flex justify-space-between align-center pa-0">
+        <!-- Tittle -->
+        <div class="text-h6 font-weight-medium ps-3">
           {{ props.title }}
         </div>
+        <!-- Close button -->
         <v-btn
-          icon="mdi-close"
-          @click="props.close ? props.close() : emit('update:modelValue', false)"
+          color="black"
           variant="text"
+          icon="mdi-close"
+          @click="emit('update:modelValue', false)"
         ></v-btn>
       </v-card-title>
-      <v-card-text>
+      <!-- Description -->
+      <v-card-text class="pt-4 px-4 pb-5">
         {{ props.description }}
       </v-card-text>
-      <v-container style="display: flex; padding: 16px; justify-content: flex-end; gap: 5px">
+      <v-container class="d-flex justify-end ga-2 py-0 px-4">
+        <!-- Cancel button -->
         <ButtonAdapter
-          width="10px"
-          color="confirmation"
-          hover="confirmationHover"
-          @click="props.close ? props.close() : emit('update:modelValue', false)"
+          width="auto"
+          color="cancel"
           :loading="props.loading"
           v-if="props.cancelButton"
           :text="props.cancelButton"
           :disabled="props.disabled"
+          hover="var(--v-theme-cancelHover)"
+          @click="emit('update:modelValue', false)"
         />
+        <!-- Confirmation button -->
         <ButtonAdapter
-          width="10px"
-          color="delete"
+          width="auto"
           :loading="props.loading"
           :disabled="props.disabled"
           :name="props.actionButton"
-          @click="props.close ? props.close() : emit('update:modelValue', false)"
+          @click="emit('update:modelValue', false)"
         />
       </v-container>
     </v-card>

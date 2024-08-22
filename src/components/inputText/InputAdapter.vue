@@ -1,9 +1,7 @@
 <script setup lang="ts">
-import { VTextField, VTextarea } from 'vuetify/components'
-import { handleValidation } from '@/utils'
-import { TValidations } from '@/utils/types'
+import { lowercase, upperCase } from '@/utils'
 import { useField } from 'vee-validate'
-import { computed, ref } from 'vue'
+import { VTextField, VTextarea } from 'vuetify/components'
 
 // Definición de las props del componente.
 const props = defineProps<{
@@ -13,30 +11,25 @@ const props = defineProps<{
   label: string
   disabled?: boolean
   placeholder?: string
+  isUpperCase?: boolean
+  isLowerCase?: boolean
   type: 'text' | 'textarea'
-  validations?: TValidations
   onChange?: (e: Event) => void
 }>()
 
+const { id, schema, name, label, disabled, isUpperCase, isLowerCase, onChange, placeholder, type } =
+  props
+
 const {
   value: fieldValue,
-  errorMessage: veeErrorMessage,
+  errorMessage,
   handleBlur: onBlur,
-  handleChange: onChange
-} = useField(() => props?.name, props?.schema)
-
-// Estado del error de las validaciones.
-let errorMessage = ref<string[]>([])
-
-// Computed para manejar el mensaje de error.
-const computedErrorMessages = computed(() => {
-  // Prioriza el mensaje de error de vee-validate
-  return veeErrorMessage?.value || errorMessage?.value[0]
-})
+  handleChange: handleOnChange
+} = useField(() => name, schema)
 
 /**
  * @function handleBlur
- * @param event
+ * @param event - El evento de blur
  */
 const handleBlur = (event: Event) => {
   onBlur(event)
@@ -44,36 +37,21 @@ const handleBlur = (event: Event) => {
 
 /**
  * @function handleChange
- * @param e
+ * @param e - El evento de input
  */
 const handleChange = (e: Event) => {
-  if (!props.disabled) {
-    // Errores
-    let error: string[] = []
+  if (!disabled) {
+    const inputValue = (e.target as HTMLInputElement).value
 
-    const { validations } = props
-
-    // Validaciones
-    if (validations) {
-      const { errors, transformedValue } = handleValidation(validations, e)
-
-      // Actualiza mensajes de error
-      error = errors?.length > 0 ? errors : []
-
-      // Actualiza el valor del campo solo si viene transformedValue
-      if (transformedValue !== undefined) {
-        ;(e.target as HTMLInputElement).value = transformedValue
-      }
-    }
-
-    // Sincroniza errores con VeeValidate
-    errorMessage.value = error?.length > 0 ? error : []
+    // Aplica transformaciones en función de las props
+    if (isUpperCase) (e.target as HTMLInputElement).value = upperCase(inputValue)
+    if (isLowerCase) (e.target as HTMLInputElement).value = lowercase(inputValue)
 
     // Llama a la función handleChange de VeeValidate
-    onChange(e)
+    handleOnChange(e)
 
     // Llama a la función onChange si se proporciona
-    if (props?.onChange) props?.onChange(e)
+    if (onChange) onChange(e)
   }
 }
 </script>
@@ -81,16 +59,16 @@ const handleChange = (e: Event) => {
 <!-- Componente -->
 <template>
   <component
-    :is="props.type === 'text' ? VTextField : VTextarea"
-    :id="props.id"
+    :is="type === 'text' ? VTextField : VTextarea"
+    :id="id"
+    :label="label"
     @blur="handleBlur"
     variant="outlined"
+    :disabled="disabled"
     v-model="fieldValue"
-    :label="props.label"
     @input="handleChange"
-    :disabled="props.disabled"
-    :placeholder="props.placeholder"
-    :no-resize="props.type === 'textarea'"
-    :error-messages="computedErrorMessages"
+    :placeholder="placeholder"
+    :error-messages="errorMessage"
+    :no-resize="type === 'textarea'"
   />
 </template>

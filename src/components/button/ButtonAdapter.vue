@@ -11,66 +11,81 @@ const props = defineProps<{
   height?: string
   loading?: boolean
   disabled?: boolean
+  onlyIcon?: boolean
   prependIcon?: string
   onClick: (e?: Event) => void | Promise<void>
 }>()
 
-const { name, width, height, loading, disabled, prependIcon, onClick, hover } = props
+const {
+  name,
+  color,
+  width,
+  hover,
+  height,
+  loading,
+  onClick,
+  disabled,
+  prependIcon,
+  onlyIcon = false
+} = props
 
 const { smAndUp } = useDisplay()
-
-console.log(props.hover, 'hover')
-
-const handleClick = (e: Event) => {
-  if (onClick) {
-    try {
-      onClick(e)
-    } catch (error) {
-      console.error('Error en el manejado de clic:', error)
-    }
-  }
-}
 
 const buttonStyle = computed(() => {
   return {
     width: width ?? '150px',
     height: height ?? '40px',
-    '--hover-color': hover ?? 'var(--v-theme-secondary)'
+    '--hover-color': hover ? hover : 'var(--v-theme-secondary)'
   }
 })
 </script>
 
 <template>
   <v-btn
-    v-if="smAndUp"
+    v-if="onlyIcon"
+    @click="onClick"
     variant="elevated"
     :loading="loading"
-    @click="handleClick"
+    :icon="prependIcon"
     :style="buttonStyle"
     class="btn-hover my-4"
-    :text="name ?? 'Button'"
-    :prepend-icon="prependIcon"
     :color="color || 'primary'"
     :disabled="loading || disabled"
+  ></v-btn>
+
+  <v-btn
+    v-else-if="!onlyIcon && smAndUp"
+    @click="onClick"
+    variant="elevated"
+    :loading="loading"
+    :style="buttonStyle"
+    class="btn-hover my-4"
+    :text="name || 'Button'"
+    :color="color || 'primary'"
+    :disabled="loading || disabled"
+    :prepend-icon="!smAndUp && prependIcon"
   >
   </v-btn>
 
   <v-btn
     v-else
+    @click="onClick"
+    variant="elevated"
+    :loading="loading"
     :icon="prependIcon"
-    @click="handleClick"
-    :disabled="disabled"
     :style="buttonStyle"
+    class="btn-hover my-4"
     :color="color || 'primary'"
+    :disabled="loading || disabled"
   ></v-btn>
 </template>
 
-<!-- <style scoped>
+<style scoped>
 .btn-hover {
   color: white;
 }
 
 .btn-hover:hover {
-  background-color: rgb(var(--v-theme-secondary)) !important;
+  background-color: rgb(var(--hover-color)) !important;
 }
-</style> -->
+</style>

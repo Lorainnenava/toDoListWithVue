@@ -36,10 +36,8 @@ const vuetify = createVuetify({
           modules: colors.modules,
           text: colors.text,
           textError: colors.textError,
-          delete: colors.delete,
-          deleteHover: colors.deleteHover,
-          confirmation: colors.confirmation,
-          confirmationHover: colors.confirmationHover
+          cancel: colors.cancel,
+          cancelHover: colors.cancelHover
         }
       }
     }

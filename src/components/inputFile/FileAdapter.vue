@@ -30,13 +30,13 @@ const computedAccept = computed(() => {
 <template>
   <v-file-input
     :id="props.id"
+    class="inputFile"
     v-model="fieldValue"
     @input="props.onChange"
     :accept="computedAccept"
     :disabled="props?.disabled"
     :error-messages="veeErrorMessage"
     :label="label ?? 'Subir archivo'"
-    class="inputFile"
   ></v-file-input>
 </template>
 
