@@ -32,7 +32,6 @@ export const ConfigSwagger = (
         },
       },
     },
-    security: [],
     info: {
       title: "API",
       version: "0.1.0",
@@ -40,13 +39,6 @@ export const ConfigSwagger = (
         "This is a simple CRUD API application made with Express and documented with Swagger",
     },
   });
-
-  // Marca las rutas que requieren autenticación en Swagger
-  options.paths["/state/protected-route"].get.security = [
-    {
-      bearerAuth: [],
-    },
-  ];
 
   return options;
 };
