@@ -38,6 +38,10 @@ export class UserGetByIdService implements UserGetByIdServiceInterface {
         transaction,
       });
 
+      if (!searchUser) {
+        throw new Error("No existe ningún usuario con este id.");
+      }
+
       // Convierte la data de tipo modelo a tipo response.
       const mappedData = mapper.map(searchUser, User, UserRequestDto);
 

@@ -24,29 +24,18 @@ export const ConfigSwagger = (
       securitySchemes: {
         bearerAuth: {
           type: "http",
-          in: "header",
-          name: "Authorization",
-          description: "Bearer Token",
           scheme: "bearer",
           bearerFormat: "JWT",
         },
       },
     },
-    security: [],
     info: {
       title: "API",
       version: "0.1.0",
       description:
-        "This is a simple CRUD API application made with Express and documented with Swagger",
+        "This is an API for a Task Tracker application built with Express and documented using Swagger.",
     },
   });
-
-  // Marca las rutas que requieren autenticación en Swagger
-  options.paths["/state/protected-route"].get.security = [
-    {
-      bearerAuth: [],
-    },
-  ];
 
   return options;
 };

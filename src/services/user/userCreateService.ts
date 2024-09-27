@@ -98,6 +98,7 @@ export class UserCreateService implements UserCreateServiceInterface {
             },
           ],
         });
+        transaction;
       }
 
       await transaction.commit();
