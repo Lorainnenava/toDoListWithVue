@@ -33,7 +33,7 @@ const { smAndUp } = useDisplay()
 
 const buttonStyle = computed(() => {
   return {
-    width: width ?? '150px',
+    width: width || '150px',
     height: height ?? '40px',
     '--hover-color': hover ? hover : 'var(--v-theme-secondary)'
   }

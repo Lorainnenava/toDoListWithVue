@@ -61,6 +61,7 @@ const handleChange = (e: Event) => {
   <component
     :is="type === 'text' ? VTextField : VTextarea"
     :id="id"
+    width="100%"
     :label="label"
     @blur="handleBlur"
     variant="outlined"
